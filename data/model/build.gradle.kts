@@ -15,4 +15,5 @@ kotlin {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":data:dto"))
+    implementation(libs.gson)
 }
