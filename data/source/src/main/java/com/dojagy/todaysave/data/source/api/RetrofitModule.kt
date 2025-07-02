@@ -4,6 +4,7 @@ import com.dojagy.todaysave.common.util.AppConfig
 import com.dojagy.todaysave.data.source.BuildConfig
 import com.dojagy.todaysave.data.source.api.interceptor.AuthInterceptor
 import com.dojagy.todaysave.data.source.api.interceptor.PrettyHttpLoggingInterceptor
+import com.dojagy.todaysave.data.source.api.interceptor.TokenAuthenticator
 import com.dojagy.todaysave.data.source.api.service.UserService
 import com.dojagy.todaysave.data.source.datastore.repo.TokenDatastoreRepositoryImpl
 import dagger.Module

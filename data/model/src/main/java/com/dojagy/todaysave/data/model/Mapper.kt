@@ -3,6 +3,11 @@ package com.dojagy.todaysave.data.model
 import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.data.dto.user.TokenDto
 import com.dojagy.todaysave.data.dto.user.UserDto
+import com.dojagy.todaysave.data.model.user.Gender
+import com.dojagy.todaysave.data.model.user.SnsType
+import com.dojagy.todaysave.data.model.user.TokenModel
+import com.dojagy.todaysave.data.model.user.UserGrade
+import com.dojagy.todaysave.data.model.user.UserModel
 
 fun UserDto?.mapper(
     snsType: SnsType,
@@ -16,13 +21,13 @@ fun UserDto?.mapper(
     birthday = this?.birthday,
     gender = try {
         Gender.valueOf((this?.gender ?: String.DEFAULT).uppercase())
-    }catch (e: Exception){
+    } catch (e: Exception) {
         e.printStackTrace()
         null
     },
     grade = try {
         UserGrade.valueOf((this?.grade ?: String.DEFAULT).uppercase())
-    }catch (e: Exception) {
+    } catch (e: Exception) {
         e.printStackTrace()
         UserGrade.DEFAULT
     }
@@ -35,13 +40,13 @@ fun UserDto?.mapper() = UserModel(
     birthday = this?.birthday,
     gender = try {
         Gender.valueOf((this?.gender ?: String.DEFAULT).uppercase())
-    }catch (e: Exception){
+    } catch (e: Exception) {
         e.printStackTrace()
         null
     },
     grade = try {
         UserGrade.valueOf((this?.grade ?: String.DEFAULT).uppercase())
-    }catch (e: Exception) {
+    } catch (e: Exception) {
         e.printStackTrace()
         UserGrade.DEFAULT
     }

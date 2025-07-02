@@ -5,7 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.data.domain.repository.TokenDatastoreRepository
-import com.dojagy.todaysave.data.model.TokenModel
+import com.dojagy.todaysave.data.model.user.TokenModel
 import com.dojagy.todaysave.data.source.datastore.preferences.TokenPreferences
 import com.dojagy.todaysave.data.source.datastore.qulifier.TokenDatastore
 import kotlinx.coroutines.CoroutineScope

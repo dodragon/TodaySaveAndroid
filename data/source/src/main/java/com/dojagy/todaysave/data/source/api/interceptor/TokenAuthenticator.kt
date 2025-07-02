@@ -1,4 +1,4 @@
-package com.dojagy.todaysave.data.source.api
+package com.dojagy.todaysave.data.source.api.interceptor
 
 import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.data.dto.user.TokenDto
@@ -61,7 +61,7 @@ class TokenAuthenticator @Inject constructor(
                 // 갱신 성공: 새 토큰을 DataStore에 저장
                 runBlocking {
                     tokenRepo.setTokens(
-                        accessToken = newTokens.accessToken ?: String.DEFAULT,
+                        accessToken = newTokens.accessToken ?: String.Companion.DEFAULT,
                         refreshToken = newTokens.refreshToken ?: String.DEFAULT
                     )
                 }

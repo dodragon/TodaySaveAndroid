@@ -1,4 +1,4 @@
-package com.dojagy.todaysave.data.source.api
+package com.dojagy.todaysave.data.source.api.repo
 
 import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.common.util.DLog
@@ -30,15 +30,17 @@ open class BaseApiRepository {
                 val data = responseData.body()?.data
 
                 return flow {
-                    emit(MainModel<M>(
-                        state = apiState,
-                        message = message,
-                        data = if(data != null) {
-                            mapper?.invoke(data)
-                        }else {
-                            null
-                        }
-                    ))
+                    emit(
+                        MainModel<M>(
+                            state = apiState,
+                            message = message,
+                            data = if (data != null) {
+                                mapper?.invoke(data)
+                            } else {
+                                null
+                            }
+                        )
+                    )
                 }
             } catch (e: SocketException) {
                 // Software caused connection abort 와 같은 오류를 여기서 잡음
@@ -68,11 +70,13 @@ open class BaseApiRepository {
         }
 
         return flow {
-            emit(MainModel(
-                state = ApiState.ERROR,
-                message = "네트워크 상태를 확인해주세요.",
-                data = null
-            ))
+            emit(
+                MainModel(
+                    state = ApiState.ERROR,
+                    message = "네트워크 상태를 확인해주세요.",
+                    data = null
+                )
+            )
         }
     }
 
@@ -97,7 +101,7 @@ open class BaseApiRepository {
         message: String?
     ): String {
         return when(state) {
-            ApiState.DEFAULT -> String.DEFAULT
+            ApiState.DEFAULT -> String.Companion.DEFAULT
             ApiState.SUCCESS -> message ?: String.DEFAULT
             ApiState.FAIL -> message ?: "오류가 발생했습니다."
             ApiState.ERROR -> message ?: "오류가 발생했습니다."

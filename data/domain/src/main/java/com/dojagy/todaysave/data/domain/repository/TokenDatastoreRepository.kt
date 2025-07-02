@@ -1,6 +1,6 @@
 package com.dojagy.todaysave.data.domain.repository
 
-import com.dojagy.todaysave.data.model.TokenModel
+import com.dojagy.todaysave.data.model.user.TokenModel
 import kotlinx.coroutines.flow.Flow
 
 interface TokenDatastoreRepository {

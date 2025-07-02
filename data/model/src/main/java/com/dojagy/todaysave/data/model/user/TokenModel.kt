@@ -1,4 +1,4 @@
-package com.dojagy.todaysave.data.model
+package com.dojagy.todaysave.data.model.user
 
 import com.dojagy.todaysave.common.extension.DEFAULT
 

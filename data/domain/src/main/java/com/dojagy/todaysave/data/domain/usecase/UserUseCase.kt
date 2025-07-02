@@ -5,9 +5,9 @@ import com.dojagy.todaysave.data.domain.repository.UserApiRepository
 import com.dojagy.todaysave.data.domain.repository.UserDatastoreRepository
 import com.dojagy.todaysave.data.domain.onSuccess
 import com.dojagy.todaysave.data.domain.repository.TokenDatastoreRepository
-import com.dojagy.todaysave.data.model.LoginResultModel
-import com.dojagy.todaysave.data.model.SnsType
-import com.dojagy.todaysave.data.model.UserModel
+import com.dojagy.todaysave.data.model.user.LoginResultModel
+import com.dojagy.todaysave.data.model.user.SnsType
+import com.dojagy.todaysave.data.model.user.UserModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

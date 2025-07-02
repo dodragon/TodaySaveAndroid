@@ -5,10 +5,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.data.domain.repository.UserDatastoreRepository
-import com.dojagy.todaysave.data.model.Gender
-import com.dojagy.todaysave.data.model.SnsType
-import com.dojagy.todaysave.data.model.UserGrade
-import com.dojagy.todaysave.data.model.UserModel
+import com.dojagy.todaysave.data.model.user.Gender
+import com.dojagy.todaysave.data.model.user.SnsType
+import com.dojagy.todaysave.data.model.user.UserGrade
+import com.dojagy.todaysave.data.model.user.UserModel
 import com.dojagy.todaysave.data.source.datastore.preferences.UserPreferences
 import com.dojagy.todaysave.data.source.datastore.qulifier.UserDatastore
 import kotlinx.coroutines.flow.Flow
