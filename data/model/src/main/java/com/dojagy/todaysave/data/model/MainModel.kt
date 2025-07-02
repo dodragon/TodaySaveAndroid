@@ -10,5 +10,6 @@ enum class ApiState {
     DEFAULT,
     SUCCESS,
     FAIL,
-    ERROR
+    ERROR,
+    INVALID_TOKEN
 }

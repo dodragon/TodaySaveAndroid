@@ -1,8 +1,10 @@
 [versions]
 # Android & Kotlin
 agp = "8.10.1"
+javaxInject = "1"
 kotlin = "2.1.10"
 coreKtx = "1.16.0"
+kotlinxCoroutinesCore = "1.8.1"
 lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
 ksp = "2.1.10-1.0.30"
@@ -62,6 +64,8 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 
 # Networking (Retrofit, OkHttp, Moshi)
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }

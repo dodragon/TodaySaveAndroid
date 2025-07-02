@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.gradle)
 }
 
 android {
@@ -31,12 +32,17 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:common-android"))
+    implementation(project(":data:domain"))
     implementation(project(":data:dto"))
+    implementation(project(":data:model"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -46,6 +52,10 @@ dependencies {
     implementation(libs.bundles.network)
     // Datastore
     implementation(libs.datastore)
+
+    // Hilt (DI)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
