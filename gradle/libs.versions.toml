@@ -17,6 +17,12 @@ composeBom = "2025.06.01"
 firebaseBom = "33.16.0"
 crashlyticsPlugin = "3.0.4"
 
+# Google
+googleAuth = "1.1.1"
+
+# Kakao
+kakao = "2.19.0"
+
 # Splash
 splashscreen = "1.0.1"
 
@@ -95,6 +101,12 @@ napier = { group = "io.github.aakira", name = "napier", version.ref = "napier"}
 # Open Source Licenses
 aboutlibraries-core = { group = "com.mikepenz", name = "aboutlibraries-core", version.ref = "aboutlibraries" }
 aboutlibraries-compose = { group = "com.mikepenz", name = "aboutlibraries-compose-m3", version.ref = "aboutlibraries" }
+
+# Google
+google-auth = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleAuth" }
+
+# Kakao
+kakao-user = { module = "com.kakao.sdk:v2-user", version.ref = "kakao" }
 
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }

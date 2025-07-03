@@ -34,10 +34,22 @@ android {
 
 dependencies {
     implementation(project(":core:common"))
+    implementation(project(":core:resources"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+
+    // firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+
+    // google auth
+    implementation(libs.google.auth)
+
+    // kakao auth
+    implementation(libs.kakao.user)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

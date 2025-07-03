@@ -44,7 +44,7 @@ android {
             )
             signingConfig = signingConfigs.getByName("release")
 
-            //manifestPlaceholders["enableCrashReporting"] = "true"
+            manifestPlaceholders["enableCrashReporting"] = "true"
         }
 
         getByName("debug") {
@@ -55,7 +55,7 @@ android {
                 "proguard-rules.pro"
             )
 
-            //manifestPlaceholders["enableCrashReporting"] = "false"
+            manifestPlaceholders["enableCrashReporting"] = "false"
         }
     }
     compileOptions {
@@ -106,7 +106,6 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
-    implementation(libs.firebase.auth)
     implementation(libs.firebase.crashlytics)
 
     // Oss
@@ -115,6 +114,9 @@ dependencies {
 
     // Splash
     implementation(libs.androidx.splashscreen)
+
+    // kakao
+    implementation(libs.kakao.user)
 
     // Testing
     testImplementation(libs.bundles.testing)

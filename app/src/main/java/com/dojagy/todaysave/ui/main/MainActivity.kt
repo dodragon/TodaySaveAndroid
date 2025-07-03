@@ -1,5 +1,6 @@
 package com.dojagy.todaysave.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.dojagy.todaysave.ui.auth.AuthActivity
 import com.dojagy.todaysave.ui.theme.TodaySaveTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,7 +31,7 @@ class MainActivity : ComponentActivity() {
 
         // 조건이 true이면 스플래시 유지, false가 되면 스플래시 종료
         splashScreen.setKeepOnScreenCondition {
-            true
+            false
         }
 
         enableEdgeToEdge()
@@ -40,6 +42,8 @@ class MainActivity : ComponentActivity() {
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
+
+                    startActivity(Intent(this, AuthActivity::class.java))
                 }
             }
         }

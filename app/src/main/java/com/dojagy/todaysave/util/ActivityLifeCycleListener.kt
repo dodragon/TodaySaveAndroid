@@ -3,6 +3,7 @@ package com.dojagy.todaysave.util
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.dojagy.todaysave.common.util.DLog
 
 class ActivityLifeCycleListener : Application.ActivityLifecycleCallbacks {
 
@@ -16,7 +17,7 @@ class ActivityLifeCycleListener : Application.ActivityLifecycleCallbacks {
     override fun onActivityStarted(activity: Activity) {}
 
     override fun onActivityResumed(activity: Activity) {
-
+        DLog.e("Current Activity", activity::class.java.simpleName)
     }
 
     override fun onActivityPaused(activity: Activity) {}
