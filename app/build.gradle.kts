@@ -4,12 +4,25 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.gradle)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.android.gms.oss-licenses-plugin")
+    alias(libs.plugins.google.gms.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.aboutlibraries)
 }
+
+val keyStoreProp = getProperties("keystore.properties")
 
 android {
     namespace = "com.dojagy.todaysave"
     compileSdk = targetSdkVersion
+
+    signingConfigs {
+        create("release") {
+            storeFile = file(keyStoreProp.getProperty("KEY_STORE_FILE"))
+            keyAlias = keyStoreProp.getProperty("KEY_STORE_ALIAS")
+            keyPassword = keyStoreProp.getProperty("KEY_PASSWORD")
+            storePassword = keyStoreProp.getProperty("KEY_PASSWORD")
+        }
+    }
 
     defaultConfig {
         applicationId = "com.dojagy.todaysave"
@@ -29,7 +42,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            //signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("release")
 
             //manifestPlaceholders["enableCrashReporting"] = "true"
         }
@@ -90,8 +103,15 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.crashlytics)
+
     // Oss
-    implementation(libs.play.services.oss.licenses)
+    implementation(libs.aboutlibraries.core)
+    implementation(libs.aboutlibraries.compose)
 
     // Splash
     implementation(libs.androidx.splashscreen)

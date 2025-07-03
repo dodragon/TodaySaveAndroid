@@ -22,10 +22,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.dojagy.todaysave" />
+                  <option name="mobileSdkAppId" value="1:254701847981:android:555ac028838f4b6feb0d24" />
+                  <option name="projectId" value="todaysave-e1f82" />
+                  <option name="projectNumber" value="254701847981" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

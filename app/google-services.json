@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "254701847981",
+    "project_id": "todaysave-e1f82",
+    "storage_bucket": "todaysave-e1f82.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254701847981:android:555ac028838f4b6feb0d24",
+        "android_client_info": {
+          "package_name": "com.dojagy.todaysave"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "254701847981-34d23hpntshvgl9oan2sgrn5oteeuobr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dojagy.todaysave",
+            "certificate_hash": "62dcea154f04ff11f6a2bf0b317042612450d646"
+          }
+        },
+        {
+          "client_id": "254701847981-v5ipmad904d4kbm3mhi9jac6ah7unvbb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dojagy.todaysave",
+            "certificate_hash": "cc53e826cbebc72e2e0cb2bf382cebf4ec0395cc"
+          }
+        },
+        {
+          "client_id": "254701847981-qtae3ul6ne99iqk5kqg8k7nuruknif8j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbA8QFMBRqW7ME4Zr596C8aoz45ASN0ao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "254701847981-qtae3ul6ne99iqk5kqg8k7nuruknif8j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
