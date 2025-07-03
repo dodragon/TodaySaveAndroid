@@ -18,7 +18,7 @@ import kotlin.toString
 class GoogleLogin(
     private val context: Context,
     private val webKey: String,
-    private val onComplete: (snsKey: String, type: String, email: String) -> Unit,
+    private val onComplete: (snsKey: String, type: String, email: String, name: String?) -> Unit,
     private val onError: (msg: String) -> Unit
 ) {
 
@@ -89,7 +89,7 @@ class GoogleLogin(
                 DLog.e("email2", email)
                 DLog.e("uid", authResult.user?.uid)
 
-                onComplete(authResult.user?.uid.toString(), "GOOGLE", authResult.user?.email ?: email.toString())
+                onComplete(authResult.user?.uid.toString(), "GOOGLE", authResult.user?.email ?: email.toString(), authResult.additionalUserInfo?.profile?.get("name")?.toString())
                 CoroutineScope(Dispatchers.Main).launch {
                     logout()
                 }

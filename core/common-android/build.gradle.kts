@@ -50,6 +50,8 @@ dependencies {
     // kakao auth
     implementation(libs.kakao.user)
 
+    implementation(libs.naver.oauth)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

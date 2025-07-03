@@ -10,7 +10,7 @@ import com.kakao.sdk.user.UserApiClient
 
 class KakaoLogin(
     private val context: Context,
-    private val onComplete: (snsKey: String, type: String, email: String) -> Unit,
+    private val onComplete: (snsKey: String, type: String, email: String, name: String?) -> Unit,
     private val onError: (msg: String) -> Unit
 ) {
 
@@ -44,7 +44,7 @@ class KakaoLogin(
 
                             val userKey = user.id
                             if(userKey != null) {
-                                onComplete(userKey.toString(), "K", user.kakaoAccount?.email ?: String.DEFAULT)
+                                onComplete(userKey.toString(), "KAKAO", user.kakaoAccount?.email ?: String.DEFAULT, user.kakaoAccount?.profile?.nickname)
                             }else {
                                 onError("카카오 로그인에 실패했습니다.\n다른 로그인 방법을 이용해주세요.")
                             }
@@ -84,7 +84,7 @@ class KakaoLogin(
                     val userKey = user.id
                     UserApiClient.instance.logout {
                         if(userKey != null) {
-                            onComplete(userKey.toString(), "KAKAO", user.kakaoAccount?.email ?: String.DEFAULT)
+                            onComplete(userKey.toString(), "KAKAO", user.kakaoAccount?.email ?: String.DEFAULT, user.kakaoAccount?.profile?.nickname)
                         }else {
                             onError("카카오 로그인에 실패했습니다.\n다른 로그인 방법을 이용해주세요.")
                         }

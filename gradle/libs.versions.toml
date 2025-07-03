@@ -21,7 +21,10 @@ crashlyticsPlugin = "3.0.4"
 googleAuth = "1.1.1"
 
 # Kakao
-kakao = "2.19.0"
+kakao = "2.21.4"
+
+# Naver
+naverAuth = "5.10.0"
 
 # Splash
 splashscreen = "1.0.1"
@@ -107,6 +110,9 @@ google-auth = { module = "com.google.android.libraries.identity.googleid:googlei
 
 # Kakao
 kakao-user = { module = "com.kakao.sdk:v2-user", version.ref = "kakao" }
+
+# Naver
+naver-oauth = { module = "com.navercorp.nid:oauth", version.ref = "naverAuth" }
 
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }

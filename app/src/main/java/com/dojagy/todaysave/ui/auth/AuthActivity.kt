@@ -1,7 +1,7 @@
 package com.dojagy.todaysave.ui.auth
 
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -10,11 +10,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -25,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dojagy.todaysave.common.android.sns.GoogleLogin
 import com.dojagy.todaysave.common.android.sns.KakaoLogin
+import com.dojagy.todaysave.common.android.sns.NaverLogin
 import com.dojagy.todaysave.common.util.DLog
 import com.dojagy.todaysave.ui.theme.TodaySaveTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,13 +59,9 @@ class AuthActivity : ComponentActivity() {
                                 GoogleLogin(
                                     context = context,
                                     webKey = context.getString(com.dojagy.todaysave.R.string.default_web_client_id),
-                                    onComplete = { snsKey, type, email ->
-                                        DLog.e("Google email", email)
-                                        DLog.e("Google type", type)
-                                        DLog.e("Google snsKey", snsKey)
-                                    },
+                                    onComplete = this@AuthActivity::login,
                                     onError = { msg ->
-                                        DLog.e("Google Error", msg)
+                                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                                     }
                                 ).login()
                             }
@@ -89,13 +84,9 @@ class AuthActivity : ComponentActivity() {
                         onClick = {
                             KakaoLogin(
                                 context = context,
-                                onComplete = { snsKey, type, email ->
-                                    DLog.e("Kakao email", email)
-                                    DLog.e("Kakao type", type)
-                                    DLog.e("Kakao snsKey", snsKey)
-                                },
+                                onComplete = this@AuthActivity::login,
                                 onError = { msg ->
-                                    DLog.e("Kakao Error", msg)
+                                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                                 }
                             ).login()
                         }
@@ -106,8 +97,44 @@ class AuthActivity : ComponentActivity() {
                             color = Color.White
                         )
                     }
+
+                    Button(
+                        modifier = Modifier
+                            .width(100.dp)
+                            .height(100.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black
+                        ),
+                        onClick = {
+                            NaverLogin(
+                                context = context,
+                                clientId = context.getString(com.dojagy.todaysave.R.string.naver_client_id),
+                                clientSecret = context.getString(com.dojagy.todaysave.R.string.naver_client_secret),
+                                clientName = context.getString(com.dojagy.todaysave.R.string.naver_client_name),
+                                onComplete = this@AuthActivity::login,
+                                onError = { msg ->
+                                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                                }
+                            ).login()
+                        }
+                    ) {
+                        Text(
+                            text = "네이버",
+                            fontSize = 14.sp,
+                            color = Color.White
+                        )
+                    }
                 }
             }
         }
+    }
+
+    private fun login(
+        snsKey: String,
+        snsType: String,
+        email: String,
+        nickname: String?,
+    ) {
+        //TODO request Login Api
     }
 }

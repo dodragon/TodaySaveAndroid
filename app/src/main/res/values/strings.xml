@@ -2,4 +2,8 @@
     <string name="app_name">오늘저장</string>
 
     <string name="kakao_native_app_key">fdd1e7bdde110f98c43de803c5da63c3</string>
+
+    <string name="naver_client_id">ivBphePsynJrNreWIhDJ</string>
+    <string name="naver_client_secret">VFblB9bCfN</string>
+    <string name="naver_client_name">오늘저장</string>
 </resources>
