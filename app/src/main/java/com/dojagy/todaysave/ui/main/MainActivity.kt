@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -13,37 +13,30 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.dojagy.todaysave.ui.auth.AuthActivity
-import com.dojagy.todaysave.ui.theme.TodaySaveTheme
+import com.dojagy.todaysave.data.view.theme.TodaySaveTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val splashViewModel: SplashViewModel by viewModels()
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
-
         super.onCreate(savedInstanceState)
-
-        // 조건이 true이면 스플래시 유지, false가 되면 스플래시 종료
-        splashScreen.setKeepOnScreenCondition {
-            false
-        }
 
         enableEdgeToEdge()
         setContent {
             TodaySaveTheme {
+                Box {
+
+                }
+
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
 
-                    startActivity(Intent(this, AuthActivity::class.java))
+                    //startActivity(Intent(this, AuthActivity::class.java))
                 }
             }
         }

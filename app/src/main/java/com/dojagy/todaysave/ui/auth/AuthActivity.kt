@@ -21,11 +21,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dojagy.todaysave.R
 import com.dojagy.todaysave.common.android.sns.GoogleLogin
 import com.dojagy.todaysave.common.android.sns.KakaoLogin
 import com.dojagy.todaysave.common.android.sns.NaverLogin
-import com.dojagy.todaysave.common.util.DLog
-import com.dojagy.todaysave.ui.theme.TodaySaveTheme
+import com.dojagy.todaysave.data.view.theme.TodaySaveTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -58,7 +58,7 @@ class AuthActivity : ComponentActivity() {
                             scope.launch {
                                 GoogleLogin(
                                     context = context,
-                                    webKey = context.getString(com.dojagy.todaysave.R.string.default_web_client_id),
+                                    webKey = context.getString(R.string.default_web_client_id),
                                     onComplete = this@AuthActivity::login,
                                     onError = { msg ->
                                         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
@@ -108,9 +108,9 @@ class AuthActivity : ComponentActivity() {
                         onClick = {
                             NaverLogin(
                                 context = context,
-                                clientId = context.getString(com.dojagy.todaysave.R.string.naver_client_id),
-                                clientSecret = context.getString(com.dojagy.todaysave.R.string.naver_client_secret),
-                                clientName = context.getString(com.dojagy.todaysave.R.string.naver_client_name),
+                                clientId = context.getString(R.string.naver_client_id),
+                                clientSecret = context.getString(R.string.naver_client_secret),
+                                clientName = context.getString(R.string.naver_client_name),
                                 onComplete = this@AuthActivity::login,
                                 onError = { msg ->
                                     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()

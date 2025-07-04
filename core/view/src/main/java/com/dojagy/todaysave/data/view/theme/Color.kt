@@ -1,4 +1,4 @@
-package com.dojagy.todaysave.ui.theme
+package com.dojagy.todaysave.data.view.theme
 
 import androidx.compose.ui.graphics.Color
 

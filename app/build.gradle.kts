@@ -112,9 +112,6 @@ dependencies {
     implementation(libs.aboutlibraries.core)
     implementation(libs.aboutlibraries.compose)
 
-    // Splash
-    implementation(libs.androidx.splashscreen)
-
     // kakao
     implementation(libs.kakao.user)
 

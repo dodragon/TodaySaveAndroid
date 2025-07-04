@@ -1,5 +1,6 @@
 package com.dojagy.todaysave.data.domain.usecase
 
+import com.dojagy.todaysave.common.extension.isFalse
 import com.dojagy.todaysave.data.domain.Return
 import com.dojagy.todaysave.data.domain.repository.UserApiRepository
 import com.dojagy.todaysave.data.domain.repository.UserDatastoreRepository
@@ -17,6 +18,10 @@ class UserUseCase @Inject constructor(
     private val userDatastoreRepo: UserDatastoreRepository,
     private val tokenDatastoreRepo: TokenDatastoreRepository
 ) : BaseUseCase() {
+
+    val isLogin: Flow<Boolean> = userDatastoreRepo.user.map {
+        it.snsKey.isBlank().isFalse()
+    }
 
     suspend fun checkNickname(
         nickname: String
