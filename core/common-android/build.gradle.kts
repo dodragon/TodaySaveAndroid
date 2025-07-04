@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -31,24 +30,13 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    buildFeatures {
-        compose = true
-        buildConfig = true
-    }
 }
 
 dependencies {
     implementation(project(":core:common"))
-    implementation(project(":core:view"))
-    implementation(project(":core:resources"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-
-    // Compose BOM을 먼저 플랫폼으로 가져옵니다.
-    implementation(platform(libs.androidx.compose.bom))
-    // compose-ui 번들을 사용하여 Compose 관련 라이브러리를 한 번에 추가합니다.
-    implementation(libs.bundles.compose.ui)
 
     // firebase
     implementation(platform(libs.firebase.bom))

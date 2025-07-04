@@ -8,7 +8,6 @@ import com.dojagy.todaysave.data.model.MainModel
 import com.dojagy.todaysave.data.model.user.SnsType
 import com.dojagy.todaysave.data.model.user.UserModel
 import com.dojagy.todaysave.data.model.mapper
-import com.dojagy.todaysave.data.source.api.repo.BaseApiRepository
 import com.dojagy.todaysave.data.source.api.service.UserService
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

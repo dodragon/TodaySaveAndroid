@@ -1,6 +1,5 @@
 package com.dojagy.todaysave.ui.main
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,8 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.dojagy.todaysave.ui.auth.AuthActivity
-import com.dojagy.todaysave.data.view.theme.TodaySaveTheme
+import com.dojagy.todaysave.core.resources.theme.TodaySaveTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

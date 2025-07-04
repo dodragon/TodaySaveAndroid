@@ -12,10 +12,13 @@ import okhttp3.Response
 import okhttp3.Route
 import javax.inject.Inject
 
-class TokenAuthenticator @Inject constructor(
-    private val tokenRepo: TokenDatastoreRepositoryImpl,
-    private val tokenApi: UserService
-) : Authenticator {
+class TokenAuthenticator : Authenticator {
+
+    @Inject
+    lateinit var tokenRepo: TokenDatastoreRepositoryImpl
+
+    @Inject
+    lateinit var tokenApi: UserService
 
     override fun authenticate(route: Route?, response: Response): Request? {
         // 현재 저장된 토큰 정보를 가져온다.
@@ -52,6 +55,7 @@ class TokenAuthenticator @Inject constructor(
                     }
                 } catch (e: Exception) {
                     // 네트워크 오류 등 예외 발생 시 null 반환
+                    e.printStackTrace()
                     null
                 }
             }

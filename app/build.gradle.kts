@@ -84,6 +84,7 @@ dependencies {
 
     // Data Modules
     implementation(project(":data:model"))
+    implementation(project(":data:source"))
     implementation(project(":data:domain"))
 
     implementation(libs.androidx.core.ktx)

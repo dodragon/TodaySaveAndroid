@@ -26,9 +26,6 @@ kakao = "2.21.4"
 # Naver
 naverAuth = "5.10.0"
 
-# Splash
-splashscreen = "1.0.1"
-
 # DI
 hilt = "2.56.2"
 

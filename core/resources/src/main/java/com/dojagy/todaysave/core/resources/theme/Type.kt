@@ -1,4 +1,4 @@
-package com.dojagy.todaysave.data.view.theme
+package com.dojagy.todaysave.core.resources.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

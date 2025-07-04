@@ -25,7 +25,7 @@ import com.dojagy.todaysave.R
 import com.dojagy.todaysave.common.android.sns.GoogleLogin
 import com.dojagy.todaysave.common.android.sns.KakaoLogin
 import com.dojagy.todaysave.common.android.sns.NaverLogin
-import com.dojagy.todaysave.data.view.theme.TodaySaveTheme
+import com.dojagy.todaysave.core.resources.theme.TodaySaveTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

@@ -1,4 +1,4 @@
-package com.dojagy.todaysave.data.view.theme
+package com.dojagy.todaysave.core.resources.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

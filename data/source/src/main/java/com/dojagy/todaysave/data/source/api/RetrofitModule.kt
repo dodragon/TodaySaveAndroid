@@ -6,7 +6,6 @@ import com.dojagy.todaysave.data.source.api.interceptor.AuthInterceptor
 import com.dojagy.todaysave.data.source.api.interceptor.PrettyHttpLoggingInterceptor
 import com.dojagy.todaysave.data.source.api.interceptor.TokenAuthenticator
 import com.dojagy.todaysave.data.source.api.service.UserService
-import com.dojagy.todaysave.data.source.datastore.repo.TokenDatastoreRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,25 +40,14 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideTokenAuthenticator(
-        tokenDatastoreRepositoryImpl: TokenDatastoreRepositoryImpl,
-        userService: UserService
-    ): Authenticator = TokenAuthenticator(
-        tokenRepo = tokenDatastoreRepositoryImpl,
-        tokenApi = userService
-    )
-
-    @Provides
-    @Singleton
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        authInterceptor: AuthInterceptor,
-        tokenAuthenticator: Authenticator
+        authInterceptor: AuthInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addNetworkInterceptor(authInterceptor)
             .addNetworkInterceptor(loggingInterceptor)
-            .authenticator(tokenAuthenticator)
+            .authenticator(TokenAuthenticator())
             .connectTimeout(90, TimeUnit.SECONDS)
             .readTimeout(90, TimeUnit.SECONDS)
             .writeTimeout(90, TimeUnit.SECONDS)
