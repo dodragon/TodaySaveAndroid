@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".GlobalApplication"
         android:allowBackup="true"
@@ -14,6 +16,20 @@
         android:theme="@style/Theme.TodaySave"
         tools:targetApi="31">
 
+        <activity android:name=".ui.content.ContentSharedActivity"
+            android:exported="true"
+            android:theme="@style/Theme.TodaySave">
+
+            <intent-filter>
+                <!-- 다른 앱에서 '공유'를 선택했을 때 내 앱이 목록에 나타나도록 합니다. -->
+                <action android:name="android.intent.action.SEND" />
+                <!-- 기본 카테고리 설정은 필수입니다. -->
+                <category android:name="android.intent.category.DEFAULT" />
+                <!-- 받을 데이터 타입을 지정합니다. 여기서는 일반 텍스트(URL 포함)를 의미합니다. -->
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"

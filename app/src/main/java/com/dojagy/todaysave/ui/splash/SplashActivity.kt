@@ -32,9 +32,6 @@ class SplashActivity : BaseActivity<SplashState, SplashEffect, SplashEvent, Spla
 
     @Composable
     override fun Content() {
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-        DLog.e("UI_STATE", uiState)
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -49,15 +46,10 @@ class SplashActivity : BaseActivity<SplashState, SplashEffect, SplashEvent, Spla
                 fontWeight = FontWeight.Bold
             )
         }
-
-        if (uiState.updateRequired) {
-            //TODO: 업데이트 dialog show
-        }
     }
 
     override fun activityHandleEffect(effect: BaseUiEffect) {
         super.activityHandleEffect(effect)
-        DLog.e("UI_EFFECT", effect)
         when(effect) {
             is SplashEffect.NavigateLogin -> {
                 startActivity(Intent(this, AuthActivity::class.java))
