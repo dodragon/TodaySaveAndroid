@@ -12,6 +12,7 @@ googleGmsServices = "4.4.3"
 
 # Compose
 composeBom = "2025.06.01"
+navigation = "2.8.8"
 
 # Firebase
 firebaseBom = "33.16.0"
@@ -64,6 +65,7 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 
 # Compose (BOM을 사용하므로 버전 명시 불필요)
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }

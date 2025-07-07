@@ -37,7 +37,7 @@ class SplashViewModel @Inject constructor(
                     postEffect(SplashEffect.NavigateMain)
                 } else {
                     //TODO: 온보딩 체크
-
+                    //온보딩 체크해서 최초 온보딩 실행 여부 판단
                     postEffect(SplashEffect.NavigateLogin)
                 }
             }

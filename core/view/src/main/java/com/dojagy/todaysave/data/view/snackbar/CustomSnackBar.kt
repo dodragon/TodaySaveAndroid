@@ -57,6 +57,8 @@ fun <T : BaseUiEvent> CustomSnackBarHost(
                 )
             }
         }
+
+        Spacer(modifier = Modifier.height(56.dp))
     }
 }
 

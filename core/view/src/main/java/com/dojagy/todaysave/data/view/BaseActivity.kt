@@ -44,15 +44,6 @@ abstract class BaseActivity<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent, 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiEffect.collect { effect ->
-                    defaultHandleEffect(effect)
-                }
-            }
-        }
-
         enableEdgeToEdge()
         setContent {
             val context = LocalContext.current

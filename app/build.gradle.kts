@@ -92,10 +92,10 @@ dependencies {
 
     implementation(libs.coil.compose)
 
-    // Compose BOM을 먼저 플랫폼으로 가져옵니다.
+    // Compose
     implementation(platform(libs.androidx.compose.bom))
-    // compose-ui 번들을 사용하여 Compose 관련 라이브러리를 한 번에 추가합니다.
     implementation(libs.bundles.compose.ui)
+    implementation(libs.androidx.navigation.compose)
 
     // network 번들을 사용하여 네트워킹 라이브러리를 한 번에 추가합니다.
     implementation(libs.bundles.network)

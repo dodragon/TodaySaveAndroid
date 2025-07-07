@@ -29,7 +29,7 @@ interface UserService {
     ): Response<MainDto<Unit>>
 
     @Headers("No-Auth: true")
-    @POST("api/user/join")
+    @POST("api/user/login")
     suspend fun login(
         @Body body: LoginRequestDto
     ): Response<MainDto<LoginResultDto>>

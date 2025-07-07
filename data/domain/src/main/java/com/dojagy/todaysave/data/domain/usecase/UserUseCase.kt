@@ -5,18 +5,21 @@ import com.dojagy.todaysave.data.domain.Return
 import com.dojagy.todaysave.data.domain.repository.UserApiRepository
 import com.dojagy.todaysave.data.domain.repository.UserDatastoreRepository
 import com.dojagy.todaysave.data.domain.onSuccess
+import com.dojagy.todaysave.data.domain.repository.SettingDatastoreRepository
 import com.dojagy.todaysave.data.domain.repository.TokenDatastoreRepository
 import com.dojagy.todaysave.data.model.user.LoginResultModel
 import com.dojagy.todaysave.data.model.user.SnsType
 import com.dojagy.todaysave.data.model.user.UserModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class UserUseCase @Inject constructor(
     private val apiRepo: UserApiRepository,
     private val userDatastoreRepo: UserDatastoreRepository,
-    private val tokenDatastoreRepo: TokenDatastoreRepository
+    private val tokenDatastoreRepo: TokenDatastoreRepository,
+    private val settingDatastoreRepo: SettingDatastoreRepository
 ) : BaseUseCase() {
 
     val isLogin: Flow<Boolean> = userDatastoreRepo.user.map {
@@ -25,8 +28,8 @@ class UserUseCase @Inject constructor(
 
     suspend fun checkNickname(
         nickname: String
-    ): Flow<Return<Unit>> {
-        return apiRepo.checkNickname(nickname).continuousResult()
+    ): Return<Unit> {
+        return apiRepo.checkNickname(nickname).oneTimeResult()
     }
 
     //유저 정보를 수정하는 경우 api response로 데이터 받아서 set만 해주면
@@ -65,6 +68,23 @@ class UserUseCase @Inject constructor(
         ).oneTimeResult(true).onSuccess { model ->
             userLoginProcess(model)
         }
+    }
+
+    suspend fun lastLoginType(): Return<SnsType> {
+        return settingDatastoreRepo.lastSnsType.map {
+            try {
+                Return.success(SnsType.valueOf(it))
+            }catch (e: Exception) {
+                e.printStackTrace()
+                Return.success()
+            }
+        }.first()
+    }
+
+    suspend fun setLastLogin(
+        snsType: SnsType
+    ) {
+        settingDatastoreRepo.setLastSnsType(snsType.strValue)
     }
 
     private suspend fun userLoginProcess(
