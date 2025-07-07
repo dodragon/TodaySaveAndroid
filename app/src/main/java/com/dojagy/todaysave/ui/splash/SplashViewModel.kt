@@ -36,6 +36,8 @@ class SplashViewModel @Inject constructor(
                 if (isLogin.isTrue()) {
                     postEffect(SplashEffect.NavigateMain)
                 } else {
+                    //TODO: 온보딩 체크
+
                     postEffect(SplashEffect.NavigateLogin)
                 }
             }
