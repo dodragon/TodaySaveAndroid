@@ -43,6 +43,23 @@ class JoinViewModel @Inject constructor(
     )
     val terms = _terms.asStateFlow()
 
+    init {
+        requestRandomNickname()
+    }
+
+    private fun requestRandomNickname() {
+        viewModelScope.launch {
+            userUseCase.randomNickname()
+                .onSuccess {
+                    setState {
+                        copy(
+                            randomNickname = it
+                        )
+                    }
+                }
+        }
+    }
+
     private fun requestNicknameCheck(
         nickname: String
     ) {
@@ -52,9 +69,11 @@ class JoinViewModel @Inject constructor(
                     setState {
                         copy(
                             isNicknameChecked = true,
-                            currentRoute = JoinRoute.TERMS
+                            selectedNickname = nickname
                         )
                     }
+
+                    postEffect(NicknameCheckDone)
                 }.onFailure { msg ->
                     showSnackBar(message = msg)
                 }
@@ -87,32 +106,32 @@ class JoinViewModel @Inject constructor(
         event: JoinEvent
     ) {
         when (event) {
-            is JoinEvent.OnCheckedTerm -> {
+            is JoinEvent.OnClickTermsCheck -> {
                 val newList = _terms.value.map { termsCheckItem ->
-                    if (termsCheckItem.term.title == event.termsCheck.term.title) {
-                        termsCheckItem.copy(isCheck = event.termsCheck.isCheck)
-                    } else {
-                        termsCheckItem
-                    }
-                }
-                // 새로 생성된 리스트를 할당해야 StateFlow가 변경을 감지함
-                _terms.value = newList
-            }
-
-            is JoinEvent.OnBack -> {
-                when(uiState.value.currentRoute) {
-                    JoinRoute.NICKNAME -> {}
-                    JoinRoute.TERMS -> {
-                        setState {
-                            copy(
-                                isNicknameChecked = true,
-                                currentRoute = JoinRoute.NICKNAME
-                            )
+                    when(event.type) {
+                        CheckTermType.ALL -> {
+                            termsCheckItem.copy(isCheck = event.isCheck)
+                        }
+                        CheckTermType.PERSONAL -> {
+                            if(termsCheckItem.term.title == "개인정보 처리방침") {
+                                termsCheckItem.copy(isCheck = event.isCheck)
+                            }else {
+                                termsCheckItem
+                            }
+                        }
+                        CheckTermType.USABLE -> {
+                            if(termsCheckItem.term.title == "이용약관") {
+                                termsCheckItem.copy(isCheck = event.isCheck)
+                            }else {
+                                termsCheckItem
+                            }
                         }
                     }
                 }
+
+                _terms.value = newList
             }
-            is JoinEvent.OnJoinButtonClick -> {
+            is JoinEvent.OnClickJoin -> {
                 terms.value.map {
                     if(it.isCheck.isFalse()) {
                         showSnackBar(message = "${it.term.title}에 동의해주세요.")
@@ -127,23 +146,28 @@ class JoinViewModel @Inject constructor(
                     nickname = event.nickname
                 )
             }
-            is JoinEvent.OnNextButtonClick -> {
-                if(uiState.value.isNicknameChecked) {
-                    setState { copy(currentRoute = JoinRoute.TERMS) }
+            is JoinEvent.OnClickShowTerm -> {
+                postEffect(StartTermsWeb(event.term))
+            }
+            is JoinEvent.OnClickNicknameCheck -> {
+                val inputNickname = event.nickname
+                if(inputNickname.isBlank()) {
+                    showDefaultSnackBar("닉네임을 입력해 주세요")
+                }else if(Regex("^[a-zA-Z0-9가-힣]*$").matches(inputNickname).isFalse()) {
+                    showDefaultSnackBar("닉네임에는 특수문자나 공백을 포함할 수 없습니다")
+                }else if(inputNickname.length <= 2 || inputNickname.length >= 12) {
+                    showDefaultSnackBar("닉네임은 2~12자 이내로 작성해주세요")
                 }else {
-                    requestNicknameCheck(uiState.value.inputNickname)
+                    requestNicknameCheck(inputNickname)
                 }
             }
             is JoinEvent.OnNicknameChange -> {
                 setState {
                     copy(
-                        inputNickname = event.nickname,
+                        selectedNickname = String.DEFAULT,
                         isNicknameChecked = false
                     )
                 }
-            }
-            is JoinEvent.OnClickShowTerm -> {
-                postEffect(StartTermsWeb(event.term))
             }
         }
     }
@@ -166,36 +190,38 @@ data class Term(
 )
 
 data class JoinState(
-    val currentRoute: JoinRoute = JoinRoute.NICKNAME, // 현재 화면이 어디인지
-    val inputNickname: String = String.DEFAULT, // 닉네임 상태를 ViewModel이 직접 관리
-    val isNicknameChecked: Boolean = false, // API 호출 성공 여부만 저장
+    val randomNickname: String = String.DEFAULT,
+    val selectedNickname: String = String.DEFAULT,
+    val isNicknameChecked: Boolean = false,
     override val isLoading: Boolean = false
 ) : BaseUiState
 
 sealed interface JoinEvent : BaseUiEvent {
-    data class OnNicknameChange(val nickname: String) : JoinEvent // 닉네임 입력 이벤트
-    data object OnNextButtonClick : JoinEvent // 하단 버튼 클릭 이벤트 (역할이 명확해짐)
-    data class OnJoinButtonClick(
+    data object OnNicknameChange : JoinEvent
+    data class OnClickNicknameCheck(val nickname: String) : JoinEvent
+    data class OnClickTermsCheck(
+        val type: CheckTermType,
+        val isCheck: Boolean
+    ) : JoinEvent
+    data class OnClickShowTerm(
+        val term: Term
+    ) : JoinEvent
+    data class OnClickJoin(
         val email: String,
         val snsType: String,
         val snsKey: String,
         val nickname: String
     ) : JoinEvent
-    data class OnCheckedTerm(
-        val termsCheck: TermsCheck,
-    ) : JoinEvent
-    data class OnClickShowTerm(
-        val term: Term
-    ) : JoinEvent
-    data object OnBack : JoinEvent
+}
+
+enum class CheckTermType{
+    ALL,
+    PERSONAL,
+    USABLE
 }
 
 sealed interface JoinEffect : BaseUiEffect {
+    data object NicknameCheckDone : JoinEffect
     data object StartOnboard : JoinEffect
     data class StartTermsWeb(val term: Term) : JoinEffect
-}
-
-enum class JoinRoute {
-    NICKNAME,
-    TERMS
 }

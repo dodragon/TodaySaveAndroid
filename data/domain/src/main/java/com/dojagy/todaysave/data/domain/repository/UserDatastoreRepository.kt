@@ -10,4 +10,6 @@ interface UserDatastoreRepository {
     suspend fun setUser(
         data: UserModel
     )
+
+    suspend fun clearUser()
 }

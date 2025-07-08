@@ -36,6 +36,10 @@ class UserDatastoreRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun clearUser() {
+        datastore.edit { it.clear() }
+    }
+
     override val user: Flow<UserModel> = datastore.data
         .map { preferences ->
             UserModel(

@@ -1,35 +1,37 @@
 package com.dojagy.todaysave.ui.auth.join
 
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.compose.rememberNavController
-import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.core.resources.R
+import com.dojagy.todaysave.core.resources.theme.Gray05
 import com.dojagy.todaysave.data.view.BaseActivity
-import com.dojagy.todaysave.data.view.button.BottomButton
-import com.dojagy.todaysave.data.view.title.BackTitle
-import com.dojagy.todaysave.ui.auth.join.screen.NicknameScreen
-import com.dojagy.todaysave.ui.auth.join.screen.TermsCheckScreen
+import com.dojagy.todaysave.data.view.button.FullSizeRoundButton
+import com.dojagy.todaysave.data.view.text.TsText
+import com.dojagy.todaysave.data.view.text.TsTextField
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,26 +39,47 @@ class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewMode
 
     override val viewModel: JoinViewModel by viewModels()
 
-    @OptIn(ExperimentalLayoutApi::class)
     @Composable
     override fun Content() {
+        val keyboardController = LocalSoftwareKeyboardController.current
+
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        var inputNickname by rememberSaveable {
+            mutableStateOf(uiState.randomNickname)
+        }
 
-        var inputNickname by rememberSaveable { mutableStateOf(intent.getStringExtra("nickname") ?: String.DEFAULT) }
+        var isTermsBottomSheetShow by rememberSaveable {
+            mutableStateOf(false)
+        }
 
-        val isKeyboardVisible = WindowInsets.isImeVisible
+        var requestFocus by rememberSaveable { mutableStateOf(false) }
+        val focusRequester = remember { FocusRequester() }
 
         LaunchedEffect(Unit) {
             viewModel.uiEffect.collect { effect ->
-                when(effect) {
+                when (effect) {
+                    is JoinEffect.NicknameCheckDone -> {
+                        isTermsBottomSheetShow = true
+                    }
                     is JoinEffect.StartOnboard -> {
-                        //TODO: 온보드
+                        //TODO: start onboard
                     }
                     is JoinEffect.StartTermsWeb -> {
-                        //TODO: 약관 웹뷰
+                        //TODO: start term webview
                     }
                 }
             }
+        }
+
+        LaunchedEffect(requestFocus) {
+            if (requestFocus) {
+                focusRequester.requestFocus()
+                keyboardController?.show()
+            }
+        }
+
+        LaunchedEffect(Unit) {
+            requestFocus = true
         }
 
         Column(
@@ -64,78 +87,60 @@ class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewMode
                 .fillMaxSize()
                 .imePadding()
         ) {
-            BackTitle {
-                onBack()
-            }
-
-            Box(
+            Column(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .weight(1f)
+                    .verticalScroll(rememberScrollState())
             ) {
-                when(uiState.currentRoute) {
-                    JoinRoute.NICKNAME -> {
-                        NicknameScreen(
-                            nickname = inputNickname,
-                            onNicknameChange = {
-                                if(it.length < 9) {
-                                    inputNickname = it
-                                }
-                            }
-                        )
-                    }
-                    JoinRoute.TERMS -> {
-                        TermsCheckScreen(
-                            viewModel = viewModel,
-                            onShowTerm = {
-                                viewModel.handleEvent(JoinEvent.OnClickShowTerm(it))
-                            }
-                        ) {
-                            viewModel.handleEvent(JoinEvent.OnCheckedTerm(it))
-                        }
-                    }
-                }
+                TsText(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 80.dp),
+                    text = stringResource(R.string.join_title),
+                    color = Gray05,
+                    size = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    align = TextAlign.Center
+                )
+
+                TsTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 44.dp),
+                    value = inputNickname,
+                    focusRequester = focusRequester,
+                    hint = stringResource(R.string.join_nickname_hint),
+                    onValueChange = {
+                        inputNickname = it
+                    },
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    textSize = 28.sp,
+                    useUnderLine = false
+                )
+
+                //TODO: 기타 등등
             }
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                BottomButton(
+                FullSizeRoundButton(
                     modifier = Modifier
-                        .padding(horizontal = 20.dp),
-                    text = when(uiState.currentRoute) {
-                        JoinRoute.NICKNAME -> stringResource(R.string.next)
-                        JoinRoute.TERMS -> stringResource(R.string.do_join)
-                    },
+                        .padding(horizontal = 16.dp),
+                    text = stringResource(R.string.done),
                 ) {
-                    if(uiState.currentRoute == JoinRoute.NICKNAME) {
-                        viewModel.handleEvent(JoinEvent.OnNextButtonClick)
-                    }else {
-                        viewModel.handleEvent(JoinEvent.OnJoinButtonClick(
-                            email = intent.getStringExtra("email") ?: String.DEFAULT,
-                            snsType = intent.getStringExtra("snsType") ?: String.DEFAULT,
-                            snsKey = intent.getStringExtra("snsKey") ?: String.DEFAULT,
-                            nickname = inputNickname
-                        ))
-                    }
+                    viewModel.handleEvent(JoinEvent.OnClickNicknameCheck(inputNickname))
                 }
 
-                Spacer(modifier = Modifier.height(
-                    if(isKeyboardVisible) {
-                        20.dp
-                    }else {
-                        40.dp
-                    }
-                ))
+                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     }
 
-    override fun onBack() {
-        if(viewModel.uiState.value.currentRoute == JoinRoute.NICKNAME) {
-            finish()
-        }else {
-            viewModel.handleEvent(JoinEvent.OnBack)
-        }
-    }
+    override fun onBack() {}
 }

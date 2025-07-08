@@ -74,6 +74,17 @@ class UserUseCase @Inject constructor(
         }
     }
 
+    suspend fun logout(): Return<Unit> {
+        return try {
+            tokenDatastoreRepo.clearTokens()
+            userDatastoreRepo.clearUser()
+            Return.success()
+        }catch (e: Exception) {
+            e.printStackTrace()
+            Return.failure("로그아웃에 실패했습니다.")
+        }
+    }
+
     suspend fun lastLoginType(): Return<SnsType> {
         return settingDatastoreRepo.lastSnsType.map {
             try {

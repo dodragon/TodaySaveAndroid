@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -124,13 +126,16 @@ class LoginActivity : BaseActivity<LoginState, LoginEffect, LoginEvent, LoginVie
                     )
                 }
 
+                val iconSize = 48 / 360f
+
                 Image(
                     modifier = Modifier
                         .constrainAs(google) {
                             start.linkTo(anchor = parent.start, margin = 80.dp)
                             bottom.linkTo(anchor = parent.bottom, margin = 40.dp)
+                            width = Dimension.percent(iconSize)
                         }
-                        .size(48.dp)
+                        .aspectRatio(1f)
                         .clickableSingle {
                             viewModel.handleEvent(LoginEvent.Login(SnsType.GOOGLE))
                         },
@@ -145,8 +150,9 @@ class LoginActivity : BaseActivity<LoginState, LoginEffect, LoginEvent, LoginVie
                             bottom.linkTo(anchor = google.bottom)
                             top.linkTo(anchor = google.top)
                             end.linkTo(anchor = naver.start)
+                            width = Dimension.percent(iconSize)
                         }
-                        .size(48.dp)
+                        .aspectRatio(1f)
                         .clickableSingle {
                             viewModel.handleEvent(LoginEvent.Login(SnsType.KAKAO))
                         },
@@ -159,8 +165,9 @@ class LoginActivity : BaseActivity<LoginState, LoginEffect, LoginEvent, LoginVie
                         .constrainAs(naver) {
                             end.linkTo(anchor = parent.end, margin = 80.dp)
                             bottom.linkTo(anchor = parent.bottom, margin = 40.dp)
+                            width = Dimension.percent(iconSize)
                         }
-                        .size(48.dp)
+                        .aspectRatio(1f)
                         .clickableSingle {
                             viewModel.handleEvent(LoginEvent.Login(SnsType.NAVER))
                         },

@@ -18,7 +18,7 @@ import com.dojagy.todaysave.core.resources.theme.Gray06
 import com.dojagy.todaysave.data.view.text.TsText
 
 @Composable
-fun BottomButton(
+fun FullSizeRoundButton(
     modifier: Modifier = Modifier,
     text: String,
     enabled: Boolean = true,
@@ -31,10 +31,10 @@ fun BottomButton(
     Button(
         modifier = modifier
             .fillMaxWidth()
-            .height(48.dp),
+            .height(64.dp),
         colors = colors,
         enabled = enabled,
-        shape = RoundedCornerShape(360.dp),
+        shape = RoundedCornerShape(32.dp),
         onClick = onClick
     ) {
         TsText(

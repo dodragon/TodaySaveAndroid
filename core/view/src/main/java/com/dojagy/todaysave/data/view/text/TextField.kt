@@ -1,15 +1,27 @@
 package com.dojagy.todaysave.data.view.text
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.core.resources.theme.Gray03
@@ -17,49 +29,105 @@ import com.dojagy.todaysave.core.resources.theme.Gray05
 import com.dojagy.todaysave.core.resources.theme.pretendard
 
 @Composable
-fun UnderlineTextField(
+fun TsTextField(
     modifier: Modifier = Modifier,
     value: String = String.DEFAULT,
     hint: String = String.DEFAULT,
     textSize: TextUnit = 14.sp,
+    fontWeight: FontWeight = FontWeight.Medium,
+    hintWeight: FontWeight = FontWeight.Medium,
+    textAlign: TextAlign = TextAlign.Start,
+    textColor: Color = Gray05,
+    hintColor: Color = Gray03,
+    focusRequester: FocusRequester = FocusRequester(),
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    isSingleLine: Boolean = true,
+    maxLine: Int = if (isSingleLine) 1 else Int.MAX_VALUE,
+    useUnderLine: Boolean = true,                                   //언더라인 없는 경우 상하 여백도 없음
     onValueChange: (String) -> Unit,
 ) {
-    TextField(
-        modifier = modifier.fillMaxWidth(),
+    BasicTextField(
+        modifier = modifier
+            .focusRequester(focusRequester),
         value = value,
         onValueChange = onValueChange,
         textStyle = TextStyle(
             fontSize = textSize,
-            color = Gray05,
+            color = textColor,
             fontFamily = pretendard,
-            fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Start
-        ),
-        placeholder = {
-            TsText(
-                text = hint,
-                color = Gray03,
-                size = textSize,
-                fontWeight = FontWeight.Medium,
-                align = TextAlign.Start
+            fontWeight = fontWeight,
+            textAlign = textAlign,
+            platformStyle = PlatformTextStyle(
+                includeFontPadding = false
             )
-        },
-        // 색상 커스터마이징
-        colors = TextFieldDefaults.colors(
-            // 텍스트 필드의 배경을 투명하게 설정
-            focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = Color.Transparent,
-            disabledContainerColor = Color.Transparent,
-
-            // 커서 색상을 밑줄 색상과 동일하게 설정
-            cursorColor = Gray05,
-
-            // 포커스 됐을 때와 안됐을 때의 밑줄 색상 설정
-            focusedIndicatorColor = Gray05,
-            unfocusedIndicatorColor = Gray05,
-            disabledIndicatorColor = Gray05, // 비활성화 시 밑줄 색상
         ),
-        // 한 줄 입력만 받도록 설정
-        singleLine = true
+        cursorBrush = SolidColor(textColor),
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        singleLine = isSingleLine,
+        maxLines = maxLine,
+        decorationBox = if(useUnderLine) {
+            { innerTextField ->
+                Column {
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        contentAlignment = when(textAlign) {
+                            TextAlign.Center -> Alignment.Center
+                            TextAlign.End -> Alignment.CenterEnd
+                            else -> Alignment.CenterStart
+                        }
+                    ) {
+                        innerTextField()
+
+                        if(value.isEmpty()) {
+                            TsText(
+                                text = hint,
+                                color = hintColor,
+                                size = textSize,
+                                fontWeight = hintWeight,
+                                align = textAlign
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(1.dp)
+                            .background(textColor)
+                    )
+                }
+            }
+        }else {
+            { innerTextField ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    contentAlignment = when(textAlign) {
+                        TextAlign.Center -> Alignment.Center
+                        TextAlign.End -> Alignment.CenterEnd
+                        else -> Alignment.CenterStart
+                    }
+                ) {
+                    innerTextField()
+
+                    if(value.isEmpty()) {
+                        TsText(
+                            text = hint,
+                            color = hintColor,
+                            size = textSize,
+                            fontWeight = fontWeight,
+                            align = textAlign
+                        )
+                    }
+                }
+            }
+        }
     )
 }
