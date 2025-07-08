@@ -9,5 +9,6 @@
 
     <string name="join_title">만나서 반가워요!\n닉네임을 입력해 주세요</string>
     <string name="join_nickname_hint">2글자 이상</string>
+    <string name="join_nickname_duplicate_error">이미 있는 닉네임이에요. 다른 닉네임을 입력해 주세요.</string>
 
 </resources>

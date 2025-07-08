@@ -27,6 +27,13 @@ class TokenDatastoreRepositoryImpl @Inject constructor(
     override val currentToken: TokenModel?
         get() = cachedToken
 
+    override val token: Flow<TokenModel> = datastore.data
+        .map { preferences ->
+            TokenModel(
+                accessToken = preferences[TokenPreferences.ACCESS_TOKEN] ?: String.DEFAULT,
+                refreshToken = preferences[TokenPreferences.REFRESH_TOKEN] ?: String.DEFAULT
+            )
+        }
 
     init {
         CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
@@ -45,14 +52,6 @@ class TokenDatastoreRepositoryImpl @Inject constructor(
             tokens[TokenPreferences.REFRESH_TOKEN] = refreshToken
         }
     }
-
-    override val token: Flow<TokenModel> = datastore.data
-        .map { preferences ->
-            TokenModel(
-                accessToken = preferences[TokenPreferences.ACCESS_TOKEN] ?: String.DEFAULT,
-                refreshToken = preferences[TokenPreferences.REFRESH_TOKEN] ?: String.DEFAULT
-            )
-        }
 
     override suspend fun clearTokens() {
         datastore.edit { it.clear() }

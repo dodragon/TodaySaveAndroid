@@ -11,45 +11,56 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dojagy.todaysave.common.extension.DEFAULT
-import com.dojagy.todaysave.core.resources.theme.Gray03
-import com.dojagy.todaysave.core.resources.theme.Gray05
+import com.dojagy.todaysave.core.resources.theme.Gray4
+import com.dojagy.todaysave.core.resources.theme.Gray6
 import com.dojagy.todaysave.core.resources.theme.pretendard
 
 @Composable
 fun TsTextField(
     modifier: Modifier = Modifier,
-    value: String = String.DEFAULT,
+    value: TextFieldValue = TextFieldValue(String.DEFAULT),
     hint: String = String.DEFAULT,
     textSize: TextUnit = 14.sp,
     fontWeight: FontWeight = FontWeight.Medium,
-    hintWeight: FontWeight = FontWeight.Medium,
+    hintWeight: FontWeight = fontWeight,
     textAlign: TextAlign = TextAlign.Start,
-    textColor: Color = Gray05,
-    hintColor: Color = Gray03,
+    textColor: Color = Gray6,
+    hintColor: Color = Gray4,
     focusRequester: FocusRequester = FocusRequester(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     isSingleLine: Boolean = true,
     maxLine: Int = if (isSingleLine) 1 else Int.MAX_VALUE,
     useUnderLine: Boolean = true,                                   //언더라인 없는 경우 상하 여백도 없음
-    onValueChange: (String) -> Unit,
+    onValueChange: (TextFieldValue) -> Unit,
 ) {
+    var isFocused by remember { mutableStateOf(false) }
+
     BasicTextField(
         modifier = modifier
-            .focusRequester(focusRequester),
+            .focusRequester(focusRequester)
+            .onFocusChanged {
+                isFocused = it.isFocused
+            },
         value = value,
         onValueChange = onValueChange,
         textStyle = TextStyle(
@@ -72,27 +83,16 @@ fun TsTextField(
                 Column {
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        contentAlignment = when(textAlign) {
-                            TextAlign.Center -> Alignment.Center
-                            TextAlign.End -> Alignment.CenterEnd
-                            else -> Alignment.CenterStart
-                        }
-                    ) {
-                        innerTextField()
-
-                        if(value.isEmpty()) {
-                            TsText(
-                                text = hint,
-                                color = hintColor,
-                                size = textSize,
-                                fontWeight = hintWeight,
-                                align = textAlign
-                            )
-                        }
-                    }
+                    TextFieldDecoration(
+                        innerTextField = innerTextField,
+                        textAlign = textAlign,
+                        value = value,
+                        isFocused = isFocused,
+                        hint = hint,
+                        hintColor = hintColor,
+                        textSize = textSize,
+                        hintWeight = hintWeight
+                    )
 
                     Spacer(modifier = Modifier.height(15.dp))
 
@@ -106,28 +106,51 @@ fun TsTextField(
             }
         }else {
             { innerTextField ->
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    contentAlignment = when(textAlign) {
-                        TextAlign.Center -> Alignment.Center
-                        TextAlign.End -> Alignment.CenterEnd
-                        else -> Alignment.CenterStart
-                    }
-                ) {
-                    innerTextField()
-
-                    if(value.isEmpty()) {
-                        TsText(
-                            text = hint,
-                            color = hintColor,
-                            size = textSize,
-                            fontWeight = fontWeight,
-                            align = textAlign
-                        )
-                    }
-                }
+                TextFieldDecoration(
+                    innerTextField = innerTextField,
+                    textAlign = textAlign,
+                    value = value,
+                    isFocused = isFocused,
+                    hint = hint,
+                    hintColor = hintColor,
+                    textSize = textSize,
+                    hintWeight = hintWeight
+                )
             }
         }
     )
+}
+
+@Composable
+private fun TextFieldDecoration(
+    innerTextField: @Composable () -> Unit,
+    textAlign: TextAlign,
+    value: TextFieldValue,
+    isFocused: Boolean,
+    hint: String,
+    hintColor: Color,
+    textSize: TextUnit,
+    hintWeight: FontWeight,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(),
+        contentAlignment = when(textAlign) {
+            TextAlign.Center -> Alignment.Center
+            TextAlign.End -> Alignment.CenterEnd
+            else -> Alignment.CenterStart
+        }
+    ) {
+        innerTextField()
+
+        if(value.text.isEmpty() && isFocused.not()) {
+            TsText(
+                text = hint,
+                color = hintColor,
+                size = textSize,
+                fontWeight = hintWeight,
+                align = textAlign
+            )
+        }
+    }
 }

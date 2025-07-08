@@ -44,6 +44,6 @@ interface UserService {
     suspend fun myInfo(): Response<MainDto<UserDto>>
 
     @Headers("No-Auth: true")
-    @GET("api/random-nickname")
+    @GET("api/user/random-nickname")
     suspend fun randomNickname(): Response<MainDto<String>>
 }

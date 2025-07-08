@@ -1,6 +1,5 @@
 package com.dojagy.todaysave.ui.auth.login
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -15,20 +14,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.dojagy.todaysave.common.android.base.BaseUiEffect
@@ -38,8 +33,8 @@ import com.dojagy.todaysave.common.android.sns.NaverLogin
 import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.common.util.DLog
 import com.dojagy.todaysave.core.resources.R
-import com.dojagy.todaysave.core.resources.theme.Gray03
-import com.dojagy.todaysave.core.resources.theme.Gray06
+import com.dojagy.todaysave.core.resources.theme.Gray4
+import com.dojagy.todaysave.core.resources.theme.Gray7
 import com.dojagy.todaysave.data.model.user.SnsType
 import com.dojagy.todaysave.data.view.BaseActivity
 import com.dojagy.todaysave.data.view.clickableSingle
@@ -74,7 +69,7 @@ class LoginActivity : BaseActivity<LoginState, LoginEffect, LoginEvent, LoginVie
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.7f)
-                    .background(color = Gray03)
+                    .background(color = Gray4)
             ) {
                 TsText(
                     modifier = Modifier
@@ -122,7 +117,7 @@ class LoginActivity : BaseActivity<LoginState, LoginEffect, LoginEvent, LoginVie
                                     else -> {}
                                 }
                             }
-                            .background(color = Gray06)
+                            .background(color = Gray7)
                     )
                 }
 

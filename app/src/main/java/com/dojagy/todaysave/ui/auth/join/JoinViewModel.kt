@@ -28,14 +28,14 @@ class JoinViewModel @Inject constructor(
             TermsCheck(
                 term = Term(
                     title = "개인정보 처리방침",
-                    url = ""
+                    url = "https://www.notion.so/22a2a7cac6a180cda6c7fce8c6ecbde1?source=copy_link"
                 ),
                 isCheck = false
             ),
             TermsCheck(
                 term = Term(
                     title = "이용약관",
-                    url = ""
+                    url = "https://www.notion.so/22a2a7cac6a180028cc1e7530961172c?source=copy_link"
                 ),
                 isCheck = false
             )
@@ -48,12 +48,17 @@ class JoinViewModel @Inject constructor(
     }
 
     private fun requestRandomNickname() {
+        setState {
+            copy(isLoading = true)
+        }
+
         viewModelScope.launch {
             userUseCase.randomNickname()
                 .onSuccess {
                     setState {
                         copy(
-                            randomNickname = it
+                            randomNickname = it,
+                            isLoading = false
                         )
                     }
                 }
@@ -74,8 +79,12 @@ class JoinViewModel @Inject constructor(
                     }
 
                     postEffect(NicknameCheckDone)
-                }.onFailure { msg ->
-                    showSnackBar(message = msg)
+                }.onFailure {
+                    setState {
+                        copy(
+                            nicknameErrorMessage = "이미 있는 닉네임이에요. 다른 닉네임을 입력해 주세요."
+                        )
+                    }
                 }
         }
     }
@@ -152,11 +161,23 @@ class JoinViewModel @Inject constructor(
             is JoinEvent.OnClickNicknameCheck -> {
                 val inputNickname = event.nickname
                 if(inputNickname.isBlank()) {
-                    showDefaultSnackBar("닉네임을 입력해 주세요")
+                    setState {
+                        copy(
+                            nicknameErrorMessage = "닉네임을 입력해 주세요"
+                        )
+                    }
                 }else if(Regex("^[a-zA-Z0-9가-힣]*$").matches(inputNickname).isFalse()) {
-                    showDefaultSnackBar("닉네임에는 특수문자나 공백을 포함할 수 없습니다")
+                    setState {
+                        copy(
+                            nicknameErrorMessage = "닉네임에는 특수문자나 공백을 포함할 수 없습니다"
+                        )
+                    }
                 }else if(inputNickname.length <= 2 || inputNickname.length >= 12) {
-                    showDefaultSnackBar("닉네임은 2~12자 이내로 작성해주세요")
+                    setState {
+                        copy(
+                            nicknameErrorMessage = "닉네임은 2~12자 이내로 작성해주세요"
+                        )
+                    }
                 }else {
                     requestNicknameCheck(inputNickname)
                 }
@@ -165,7 +186,8 @@ class JoinViewModel @Inject constructor(
                 setState {
                     copy(
                         selectedNickname = String.DEFAULT,
-                        isNicknameChecked = false
+                        isNicknameChecked = false,
+                        nicknameErrorMessage = String.DEFAULT
                     )
                 }
             }
@@ -193,6 +215,7 @@ data class JoinState(
     val randomNickname: String = String.DEFAULT,
     val selectedNickname: String = String.DEFAULT,
     val isNicknameChecked: Boolean = false,
+    val nicknameErrorMessage: String = String.DEFAULT,
     override val isLoading: Boolean = false
 ) : BaseUiState
 

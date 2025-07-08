@@ -13,8 +13,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.dojagy.todaysave.core.resources.theme.Gray03
-import com.dojagy.todaysave.core.resources.theme.Gray06
+import com.dojagy.todaysave.core.resources.theme.Gray4
+import com.dojagy.todaysave.core.resources.theme.Gray7
 import com.dojagy.todaysave.data.view.text.TsText
 
 @Composable
@@ -23,8 +23,8 @@ fun FullSizeRoundButton(
     text: String,
     enabled: Boolean = true,
     colors: ButtonColors = ButtonDefaults.buttonColors(
-        containerColor = Gray06,
-        disabledContainerColor = Gray03
+        containerColor = Gray7,
+        disabledContainerColor = Gray4
     ),
     onClick: () -> Unit
 ) {
