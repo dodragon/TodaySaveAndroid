@@ -1,6 +1,7 @@
 [versions]
 # Android & Kotlin
 agp = "8.10.1"
+constraintlayoutCompose = "1.1.1"
 javaxInject = "1"
 kotlin = "2.1.10"
 coreKtx = "1.16.0"
@@ -58,6 +59,7 @@ material = "1.12.0"
 # --- [libraries] 섹션: 가독성을 위해 group, name 형식으로 통일 ---
 [libraries]
 # AndroidX & Lifecycle
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }

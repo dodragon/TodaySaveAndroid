@@ -96,6 +96,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose.ui)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.constraintlayout.compose)
 
     // network 번들을 사용하여 네트워킹 라이브러리를 한 번에 추가합니다.
     implementation(libs.bundles.network)

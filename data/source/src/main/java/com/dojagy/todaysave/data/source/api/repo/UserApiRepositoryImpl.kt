@@ -77,6 +77,13 @@ class UserApiRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun randomNickname(): Flow<MainModel<String>> {
+        return responseToModel(
+            response = { userService.randomNickname() },
+            mapper = { it }
+        )
+    }
+
     override suspend fun myInfo(): Flow<MainModel<UserModel>> {
         return responseToModel(
             response = {

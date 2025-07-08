@@ -24,5 +24,7 @@ interface UserApiRepository {
         nickname: String
     ): Flow<MainModel<Unit>>
 
+    suspend fun randomNickname(): Flow<MainModel<String>>
+
     suspend fun myInfo(): Flow<MainModel<UserModel>>
 }

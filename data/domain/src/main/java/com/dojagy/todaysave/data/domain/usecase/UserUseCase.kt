@@ -32,6 +32,10 @@ class UserUseCase @Inject constructor(
         return apiRepo.checkNickname(nickname).oneTimeResult()
     }
 
+    suspend fun randomNickname(): Return<String> {
+        return apiRepo.randomNickname().oneTimeResult()
+    }
+
     //유저 정보를 수정하는 경우 api response로 데이터 받아서 set만 해주면
     //해당 Flow에서 알아서 바뀌어서 UI에 뿌려질거임
     fun myInfo(): Flow<Return<UserModel>> {

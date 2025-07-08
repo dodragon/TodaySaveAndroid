@@ -19,16 +19,24 @@ fun UserDto?.mapper(
     sns = snsType,
     snsKey = snsKey,
     birthday = this?.birthday,
-    gender = try {
-        Gender.valueOf((this?.gender ?: String.DEFAULT).uppercase())
-    } catch (e: Exception) {
-        e.printStackTrace()
+    gender = if(this?.gender != null) {
+        try {
+            Gender.valueOf((this.gender ?: String.DEFAULT).uppercase())
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    } else {
         null
     },
-    grade = try {
-        UserGrade.valueOf((this?.grade ?: String.DEFAULT).uppercase())
-    } catch (e: Exception) {
-        e.printStackTrace()
+    grade = if(this?.grade != null) {
+        try {
+            UserGrade.valueOf((this.grade ?: String.DEFAULT).uppercase())
+        } catch (e: Exception) {
+            e.printStackTrace()
+            UserGrade.DEFAULT
+        }
+    }else {
         UserGrade.DEFAULT
     }
 )

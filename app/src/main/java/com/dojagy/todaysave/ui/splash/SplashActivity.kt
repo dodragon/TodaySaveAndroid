@@ -2,6 +2,7 @@ package com.dojagy.todaysave.ui.splash
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -27,8 +28,15 @@ class SplashActivity : BaseActivity<SplashState, SplashEffect, SplashEvent, Spla
 
     override val viewModel: SplashViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        useInnerPadding = false
+        super.onCreate(savedInstanceState)
+    }
+
     @Composable
     override fun Content() {
+        StatusBarLightIcon()
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
