@@ -6,15 +6,22 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Box
+import androidx.compose.runtime.getValue
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.width
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.dojagy.todaysave.common.util.DLog.toIfDataClass
 import com.dojagy.todaysave.core.resources.theme.TodaySaveTheme
 import com.dojagy.todaysave.data.view.button.FullSizeRoundButton
+import com.dojagy.todaysave.data.view.text.TsText
 import com.dojagy.todaysave.ui.auth.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,20 +37,33 @@ class MainActivity : ComponentActivity() {
             val context = LocalContext.current
 
             TodaySaveTheme {
-                Box(
+                Column (
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
+                    val user by viewModel.user.collectAsStateWithLifecycle()
+
+                    TsText(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 80.dp)
+                            .padding(horizontal = 16.dp),
+                        text = user.toIfDataClass()
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
                     FullSizeRoundButton(
                         modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(horizontal = 36.dp),
+                            .padding(horizontal = 16.dp),
                         text = "로그아웃"
                     ) {
                         viewModel.logout()
                         startActivity(Intent(context, LoginActivity::class.java))
                         finish()
                     }
+
+                    Spacer(modifier = Modifier.height(20.dp))
                 }
             }
         }

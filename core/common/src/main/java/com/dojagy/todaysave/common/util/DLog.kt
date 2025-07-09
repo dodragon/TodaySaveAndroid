@@ -58,7 +58,7 @@ object DLog {
         }
     }
 
-    private fun Any?.toIfDataClass(): String {
+    fun Any?.toIfDataClass(): String {
         val message = if (this != null && this::class.isData) {
             val indent = "   "
             val stringBuilder = StringBuilder()
