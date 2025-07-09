@@ -174,7 +174,7 @@ class JoinViewModel @Inject constructor(
                             nicknameErrorMessage = "닉네임에는 특수문자나 공백을 포함할 수 없습니다"
                         )
                     }
-                }else if(inputNickname.length <= 2 || inputNickname.length >= 12) {
+                }else if(inputNickname.length < 2 || inputNickname.length > 12) {
                     setState {
                         copy(
                             nicknameErrorMessage = "닉네임은 2~12자 이내로 작성해주세요"
@@ -189,7 +189,8 @@ class JoinViewModel @Inject constructor(
                     copy(
                         selectedNickname = String.DEFAULT,
                         isNicknameChecked = false,
-                        nicknameErrorMessage = String.DEFAULT
+                        nicknameErrorMessage = String.DEFAULT,
+                        randomNickname = String.DEFAULT
                     )
                 }
             }
