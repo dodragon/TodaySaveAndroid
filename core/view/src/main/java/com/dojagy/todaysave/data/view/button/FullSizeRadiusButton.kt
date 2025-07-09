@@ -9,7 +9,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -27,7 +26,7 @@ import com.dojagy.todaysave.data.view.clickableSingle
 import com.dojagy.todaysave.data.view.text.TsText
 
 @Composable
-fun FullSizeRoundButton(
+fun FullSizeRadiusButton(
     modifier: Modifier = Modifier,
     text: String,
     enabled: Boolean = true,
@@ -46,7 +45,7 @@ fun FullSizeRoundButton(
             .height(56.dp),
         colors = colors,
         enabled = enabled,
-        shape = RoundedCornerShape(999.dp),
+        shape = RoundedCornerShape(8.dp),
         onClick = {
             if(isSingleClick.isTrue()) {
                 val currentTime = System.currentTimeMillis()

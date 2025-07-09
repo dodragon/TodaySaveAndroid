@@ -91,6 +91,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
     implementation(libs.coil.compose)
+    implementation(libs.lottie.compose)
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))

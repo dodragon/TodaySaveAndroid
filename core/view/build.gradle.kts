@@ -50,6 +50,8 @@ dependencies {
     // compose-ui 번들을 사용하여 Compose 관련 라이브러리를 한 번에 추가합니다.
     implementation(libs.bundles.compose.ui)
 
+    implementation(libs.lottie.compose)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

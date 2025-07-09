@@ -8,7 +8,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.semantics.Role
 
-private const val CLICK_INTERVAL = 500L
+const val CLICK_INTERVAL = 500L
 
 fun Modifier.clickableSingle(
     enabled: Boolean = true,
@@ -32,6 +32,18 @@ fun Modifier.clickableSingle(
         role = role,
         indication = null,
         interactionSource = remember { MutableInteractionSource() }
+    )
+}
+
+fun Modifier.clickableNoRipple(
+    enabled: Boolean = true,
+    onClick: () -> Unit
+): Modifier = composed {
+    clickable(
+        enabled = enabled,
+        indication = null,
+        interactionSource = remember { MutableInteractionSource() },
+        onClick = onClick
     )
 }
 

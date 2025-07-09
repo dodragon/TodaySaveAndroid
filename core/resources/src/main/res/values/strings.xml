@@ -5,10 +5,16 @@
 
     <string name="next">다음</string>
     <string name="done">완료</string>
-    <string name="do_join">가입하기</string>
+    <string name="show">보기</string>
+    <string name="join_complete">가입 완료</string>
+    <string name="all_check">모두 체크하기</string>
+    <string name="last_login">최근 로그인</string>
 
     <string name="join_title">만나서 반가워요!\n닉네임을 입력해 주세요</string>
     <string name="join_nickname_hint">2글자 이상</string>
+    <string name="join_nickname_info">닉네임은 언제든 바꿀 수 있어요</string>
     <string name="join_nickname_duplicate_error">이미 있는 닉네임이에요. 다른 닉네임을 입력해 주세요.</string>
+
+    <string name="join_term_bottom_sheet_title">꼭 필요한 동의만 하고\n오늘저장을 시작해 봐요</string>
 
 </resources>

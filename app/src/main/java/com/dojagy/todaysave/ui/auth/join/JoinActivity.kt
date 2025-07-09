@@ -1,8 +1,8 @@
 package com.dojagy.todaysave.ui.auth.join
 
+import android.content.Intent
+import android.net.Uri
 import androidx.activity.viewModels
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,15 +31,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.dojagy.todaysave.common.android.base.BaseUiEffect
 import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.core.resources.R
+import com.dojagy.todaysave.core.resources.theme.Gray4
 import com.dojagy.todaysave.core.resources.theme.Gray6
 import com.dojagy.todaysave.core.resources.theme.Red
 import com.dojagy.todaysave.data.view.BaseActivity
 import com.dojagy.todaysave.data.view.button.FullSizeRoundButton
+import com.dojagy.todaysave.data.view.clickableNoRipple
 import com.dojagy.todaysave.data.view.text.TsText
 import com.dojagy.todaysave.data.view.text.TsTextField
+import com.dojagy.todaysave.ui.auth.join.screen.TermsCheckBottomSheet
+import com.dojagy.todaysave.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.core.net.toUri
 
 @AndroidEntryPoint
 class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewModel>() {
@@ -67,7 +73,7 @@ class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewMode
         var requestFocus by rememberSaveable { mutableStateOf(false) }
         val focusRequester = remember { FocusRequester() }
 
-        LaunchedEffect(uiState.randomNickname) {
+        LaunchedEffect(uiState) {
             if (uiState.randomNickname.isNotBlank()) {
                 inputNickname = TextFieldValue(
                     text = uiState.randomNickname,
@@ -75,24 +81,8 @@ class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewMode
                 )
                 bottomBtnEnable = true
             }
-        }
 
-        LaunchedEffect(Unit) {
-            viewModel.uiEffect.collect { effect ->
-                when (effect) {
-                    is JoinEffect.NicknameCheckDone -> {
-                        isTermsBottomSheetShow = true
-                    }
-
-                    is JoinEffect.StartOnboard -> {
-                        //TODO: start onboard
-                    }
-
-                    is JoinEffect.StartTermsWeb -> {
-                        //TODO: start term webview
-                    }
-                }
-            }
+            isTermsBottomSheetShow = uiState.isNicknameChecked && uiState.selectedNickname.isNotBlank()
         }
 
         LaunchedEffect(requestFocus) {
@@ -116,10 +106,7 @@ class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewMode
                     .fillMaxWidth()
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    ) {
+                    .clickableNoRipple {
                         focusManager.clearFocus()
                         keyboardController?.hide()
                     }
@@ -158,7 +145,17 @@ class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewMode
                     useUnderLine = false
                 )
 
-                //TODO: 기타 등등
+                TsText(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 16.dp),
+                    text = stringResource(R.string.join_nickname_info),
+                    color = Gray4,
+                    size = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    align = TextAlign.Center
+                )
             }
 
             Column(
@@ -193,7 +190,37 @@ class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewMode
             }
 
             if(isTermsBottomSheetShow) {
-                //TODO: 약관 동의 BottomSheet
+                TermsCheckBottomSheet(
+                    viewModel = viewModel,
+                    onDismiss = {
+                        isTermsBottomSheetShow = false
+                        viewModel.handleEvent(JoinEvent.OnTermsSheetDismissed)
+                    },
+                    onClickJoin = {
+                        viewModel.handleEvent(JoinEvent.OnClickJoin(
+                            email = intent.getStringExtra("email") ?: String.DEFAULT,
+                            snsType = intent.getStringExtra("snsType") ?: String.DEFAULT,
+                            snsKey = intent.getStringExtra("snsKey") ?: String.DEFAULT,
+                            nickname = uiState.selectedNickname
+                        ))
+                    }
+                )
+            }
+        }
+    }
+
+    override fun activityHandleEffect(effect: BaseUiEffect) {
+        super.activityHandleEffect(effect)
+        when (effect) {
+            is JoinEffect.StartOnboard -> {
+                //TODO: start onboard 일단 테스트로 메인으로 이동하게 하였음
+                startActivity(Intent(this@JoinActivity, MainActivity::class.java))
+                finish()
+            }
+
+            is JoinEffect.StartTermsWeb -> {
+                val browserIntent = Intent(Intent.ACTION_VIEW, effect.term.url?.toUri())
+                startActivity(browserIntent)
             }
         }
     }

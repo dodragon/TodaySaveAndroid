@@ -13,7 +13,7 @@ googleGmsServices = "4.4.3"
 
 # Compose
 composeBom = "2025.06.01"
-navigation = "2.8.8"
+navigation = "2.9.1"
 
 # Firebase
 firebaseBom = "33.16.0"
@@ -41,6 +41,7 @@ datastore = "1.1.7"
 
 # Image Loading
 coil = "2.7.0"
+lottie = "6.6.6"
 
 # Logging
 napier = "2.7.1"
@@ -98,6 +99,7 @@ datastore = { group = "androidx.datastore", name = "datastore-preferences", vers
 
 # Image Loading
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 
 # Logging
 napier = { group = "io.github.aakira", name = "napier", version.ref = "napier"}

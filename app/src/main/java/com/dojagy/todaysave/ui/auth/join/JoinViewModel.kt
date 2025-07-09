@@ -27,15 +27,28 @@ class JoinViewModel @Inject constructor(
         listOf(
             TermsCheck(
                 term = Term(
-                    title = "개인정보 처리방침",
-                    url = "https://www.notion.so/22a2a7cac6a180cda6c7fce8c6ecbde1?source=copy_link"
+                    text = "(필수) 만 14세 이상",
+                    title = "14세 이상",
+                    type = CheckTermType.AGE,
+                    url = null
                 ),
                 isCheck = false
             ),
             TermsCheck(
                 term = Term(
+                    text = "(필수) 개인정보 처리방침 동의",
+                    title = "개인정보 처리방침",
+                    type = CheckTermType.PERSONAL,
+                    url = "https://celestial-face-615.notion.site/22a2a7cac6a180cda6c7fce8c6ecbde1?source=copy_link"
+                ),
+                isCheck = false
+            ),
+            TermsCheck(
+                term = Term(
+                    text = "(필수) 이용약관 동의",
                     title = "이용약관",
-                    url = "https://www.notion.so/22a2a7cac6a180028cc1e7530961172c?source=copy_link"
+                    type = CheckTermType.USABLE,
+                    url = "https://celestial-face-615.notion.site/22a2a7cac6a180028cc1e7530961172c?source=copy_link"
                 ),
                 isCheck = false
             )
@@ -77,8 +90,6 @@ class JoinViewModel @Inject constructor(
                             selectedNickname = nickname
                         )
                     }
-
-                    postEffect(NicknameCheckDone)
                 }.onFailure {
                     setState {
                         copy(
@@ -116,24 +127,15 @@ class JoinViewModel @Inject constructor(
     ) {
         when (event) {
             is JoinEvent.OnClickTermsCheck -> {
-                val newList = _terms.value.map { termsCheckItem ->
-                    when(event.type) {
-                        CheckTermType.ALL -> {
+                val newList = if(event.type == CheckTermType.ALL) {
+                    val newCheckState = event.isCheck
+                    _terms.value.map { it.copy(isCheck = newCheckState) }
+                } else {
+                    _terms.value.map { termsCheckItem ->
+                        if (termsCheckItem.term.type == event.type) {
                             termsCheckItem.copy(isCheck = event.isCheck)
-                        }
-                        CheckTermType.PERSONAL -> {
-                            if(termsCheckItem.term.title == "개인정보 처리방침") {
-                                termsCheckItem.copy(isCheck = event.isCheck)
-                            }else {
-                                termsCheckItem
-                            }
-                        }
-                        CheckTermType.USABLE -> {
-                            if(termsCheckItem.term.title == "이용약관") {
-                                termsCheckItem.copy(isCheck = event.isCheck)
-                            }else {
-                                termsCheckItem
-                            }
+                        } else {
+                            termsCheckItem
                         }
                     }
                 }
@@ -191,13 +193,15 @@ class JoinViewModel @Inject constructor(
                     )
                 }
             }
+            is JoinEvent.OnTermsSheetDismissed -> {
+                setState {
+                    copy(
+                        isNicknameChecked = false,
+                        selectedNickname = String.DEFAULT
+                    )
+                }
+            }
         }
-    }
-
-    fun showDefaultSnackBar(
-        message: String
-    ) {
-        showSnackBar(message = message)
     }
 }
 
@@ -207,8 +211,10 @@ data class TermsCheck(
 )
 
 data class Term(
+    val text: String,
     val title: String,
-    val url: String
+    val type: CheckTermType,
+    val url: String?
 )
 
 data class JoinState(
@@ -235,16 +241,17 @@ sealed interface JoinEvent : BaseUiEvent {
         val snsKey: String,
         val nickname: String
     ) : JoinEvent
+    data object OnTermsSheetDismissed : JoinEvent
 }
 
 enum class CheckTermType{
     ALL,
+    AGE,
     PERSONAL,
     USABLE
 }
 
 sealed interface JoinEffect : BaseUiEffect {
-    data object NicknameCheckDone : JoinEffect
     data object StartOnboard : JoinEffect
     data class StartTermsWeb(val term: Term) : JoinEffect
 }

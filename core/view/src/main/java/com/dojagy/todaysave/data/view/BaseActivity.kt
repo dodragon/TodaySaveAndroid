@@ -52,32 +52,34 @@ abstract class BaseActivity<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent, 
 
     protected var useInnerPadding = true
 
+    private var snackBarMessages by mutableStateOf<List<SnackBarMessage<V>>>(emptyList())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {
-            val context = LocalContext.current
-            var snackBarMessages by remember { mutableStateOf<List<SnackBarMessage<V>>>(emptyList()) }
 
-            LaunchedEffect(Unit) {
-                viewModel.uiEffect.collect { effect ->
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiEffect.collect {effect ->
                     if (effect is BaseUiEffect.ShowSnackBar<*>) {
                         @Suppress("UNCHECKED_CAST")
                         snackBarMessages =
                             snackBarMessages + (effect.snackBarData as SnackBarMessage<V>)
                     } else if (effect is BaseUiEffect.ShowToast) {
-                        Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@BaseActivity, effect.message, Toast.LENGTH_SHORT).show()
                     } else {
                         defaultHandleEffect(effect)
                     }
                 }
             }
+        }
 
+        setContent {
             TodaySaveTheme {
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(color = Color.Blue)
+                        .background(color = Color.White)
                 ) { innerPadding ->
                     Column(
                         modifier = Modifier

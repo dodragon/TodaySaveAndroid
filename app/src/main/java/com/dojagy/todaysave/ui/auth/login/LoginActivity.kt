@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,6 +39,7 @@ import com.dojagy.todaysave.core.resources.theme.Gray7
 import com.dojagy.todaysave.data.model.user.SnsType
 import com.dojagy.todaysave.data.view.BaseActivity
 import com.dojagy.todaysave.data.view.clickableSingle
+import com.dojagy.todaysave.data.view.text.TopTooltip
 import com.dojagy.todaysave.data.view.text.TsText
 import com.dojagy.todaysave.ui.auth.join.JoinActivity
 import com.dojagy.todaysave.ui.main.MainActivity
@@ -90,10 +92,8 @@ class LoginActivity : BaseActivity<LoginState, LoginEffect, LoginEvent, LoginVie
                 DLog.e("state", uiState)
 
                 if(uiState.lastLoginType != null) {
-                    Box(
+                    TopTooltip(
                         modifier = Modifier
-                            .width(100.dp)
-                            .height(80.dp)
                             .constrainAs(helper) {
                                 when (uiState.lastLoginType) {
                                     SnsType.KAKAO -> {
@@ -116,8 +116,8 @@ class LoginActivity : BaseActivity<LoginState, LoginEffect, LoginEvent, LoginVie
 
                                     else -> {}
                                 }
-                            }
-                            .background(color = Gray7)
+                            },
+                        text = stringResource(R.string.last_login)
                     )
                 }
 

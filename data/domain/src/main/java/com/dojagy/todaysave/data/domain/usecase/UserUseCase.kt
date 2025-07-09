@@ -56,6 +56,7 @@ class UserUseCase @Inject constructor(
             snsKey = snsKey,
             nickname = nickname
         ).oneTimeResult(true).onSuccess { model ->
+            setLastLogin(snsType)
             userLoginProcess(model)
         }
     }
