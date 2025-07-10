@@ -7,6 +7,7 @@ import com.dojagy.todaysave.data.source.api.adapter.LocalDateTimeAdapter
 import com.dojagy.todaysave.data.source.api.interceptor.AuthInterceptor
 import com.dojagy.todaysave.data.source.api.interceptor.PrettyHttpLoggingInterceptor
 import com.dojagy.todaysave.data.source.api.interceptor.TokenAuthenticator
+import com.dojagy.todaysave.data.source.api.service.ContentService
 import com.dojagy.todaysave.data.source.api.service.UserService
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -46,12 +47,13 @@ object RetrofitModule {
     @Singleton
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        authInterceptor: AuthInterceptor
+        authInterceptor: AuthInterceptor,
+        tokenAuthenticator: TokenAuthenticator
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addNetworkInterceptor(authInterceptor)
             .addNetworkInterceptor(loggingInterceptor)
-            .authenticator(TokenAuthenticator())
+            .authenticator(tokenAuthenticator)
             .connectTimeout(90, TimeUnit.SECONDS)
             .readTimeout(90, TimeUnit.SECONDS)
             .writeTimeout(90, TimeUnit.SECONDS)
@@ -99,4 +101,9 @@ object RetrofitModule {
     @Singleton
     fun provideUserService(retrofit: Retrofit): UserService =
         retrofit.create(UserService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideContentService(retrofit: Retrofit): ContentService =
+        retrofit.create(ContentService::class.java)
 }

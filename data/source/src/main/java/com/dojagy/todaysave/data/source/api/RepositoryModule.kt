@@ -2,11 +2,14 @@ package com.dojagy.todaysave.data.source.api
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.dojagy.todaysave.data.domain.repository.ContentApiRepository
 import com.dojagy.todaysave.data.domain.repository.SettingDatastoreRepository
 import com.dojagy.todaysave.data.domain.repository.TokenDatastoreRepository
 import com.dojagy.todaysave.data.domain.repository.UserApiRepository
 import com.dojagy.todaysave.data.domain.repository.UserDatastoreRepository
+import com.dojagy.todaysave.data.source.api.repo.ContentApiRepositoryImpl
 import com.dojagy.todaysave.data.source.api.repo.UserApiRepositoryImpl
+import com.dojagy.todaysave.data.source.api.service.ContentService
 import com.dojagy.todaysave.data.source.api.service.UserService
 import com.dojagy.todaysave.data.source.datastore.qulifier.SettingDatastore
 import com.dojagy.todaysave.data.source.datastore.qulifier.TokenDatastore
@@ -32,6 +35,12 @@ object RepositoryModule {
         api: UserService
     ): UserApiRepository = UserApiRepositoryImpl(api)
 
+
+    @Provides
+    @Singleton
+    fun provideContentApiRepo(
+        api: ContentService
+    ): ContentApiRepository = ContentApiRepositoryImpl(api)
 
     /** Datastore **/
 

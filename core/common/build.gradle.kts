@@ -14,5 +14,6 @@ kotlin {
 
 dependencies {
     implementation(libs.napier)
+    implementation(libs.kotlinx.coroutines.core)
     implementation(kotlin("reflect"))
 }

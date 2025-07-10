@@ -40,11 +40,12 @@ import com.dojagy.todaysave.data.view.text.TopTooltip
 import com.dojagy.todaysave.data.view.text.TsText
 import com.dojagy.todaysave.ui.auth.join.JoinActivity
 import com.dojagy.todaysave.ui.main.MainActivity
+import com.dojagy.todaysave.util.AppBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LoginActivity : BaseActivity<LoginState, LoginEffect, LoginEvent, LoginViewModel>() {
+class LoginActivity : AppBaseActivity<LoginState, LoginEffect, LoginEvent, LoginViewModel>() {
 
     override val viewModel: LoginViewModel by viewModels()
 

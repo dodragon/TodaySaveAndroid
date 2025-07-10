@@ -37,17 +37,18 @@ import com.dojagy.todaysave.core.resources.R
 import com.dojagy.todaysave.core.resources.theme.Gray4
 import com.dojagy.todaysave.core.resources.theme.Gray6
 import com.dojagy.todaysave.core.resources.theme.Red
-import com.dojagy.todaysave.data.view.BaseActivity
 import com.dojagy.todaysave.data.view.button.FullSizeRoundButton
 import com.dojagy.todaysave.data.view.clickableNoRipple
 import com.dojagy.todaysave.data.view.text.TsText
 import com.dojagy.todaysave.data.view.text.TsTextField
 import com.dojagy.todaysave.ui.auth.join.screen.TermsCheckBottomSheet
 import com.dojagy.todaysave.ui.main.MainActivity
+import com.dojagy.todaysave.util.AppBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.getValue
 
 @AndroidEntryPoint
-class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewModel>() {
+class JoinActivity : AppBaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewModel>() {
 
     override val viewModel: JoinViewModel by viewModels()
 

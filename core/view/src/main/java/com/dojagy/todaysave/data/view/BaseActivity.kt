@@ -1,6 +1,7 @@
 package com.dojagy.todaysave.data.view
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -49,8 +50,16 @@ abstract class BaseActivity<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent, 
 
     private var snackBarMessages by mutableStateOf<List<SnackBarMessage<V>>>(emptyList())
 
+    abstract val authEventHandler: AuthEventHandler
+    abstract val loginActivityClassName: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        authEventHandler.observeAuthEvents(this) {
+            handleLogout()
+        }
+
         enableEdgeToEdge()
 
         lifecycleScope.launch {
@@ -163,4 +172,13 @@ abstract class BaseActivity<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent, 
     }
 
     abstract fun onBack()
+
+    private fun handleLogout() {
+        if (this::class.java.name == loginActivityClassName) return
+
+        val intent = Intent().setClassName(this, loginActivityClassName)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
 }

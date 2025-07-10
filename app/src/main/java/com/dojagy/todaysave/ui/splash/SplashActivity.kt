@@ -19,11 +19,12 @@ import com.dojagy.todaysave.common.android.extension.goMarket
 import com.dojagy.todaysave.data.view.BaseActivity
 import com.dojagy.todaysave.ui.auth.login.LoginActivity
 import com.dojagy.todaysave.ui.main.MainActivity
+import com.dojagy.todaysave.util.AppBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
-class SplashActivity : BaseActivity<SplashState, SplashEffect, SplashEvent, SplashViewModel>() {
+class SplashActivity : AppBaseActivity<SplashState, SplashEffect, SplashEvent, SplashViewModel>() {
 
     override val viewModel: SplashViewModel by viewModels()
 

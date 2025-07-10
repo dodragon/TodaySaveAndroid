@@ -21,7 +21,7 @@
             android:exported="false"
             android:theme="@style/Theme.TodaySave"/>
         <activity
-            android:name=".ui.content.ContentSharedActivity"
+            android:name=".ui.content.ContentSaveActivity"
             android:exported="true"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.TodaySave">

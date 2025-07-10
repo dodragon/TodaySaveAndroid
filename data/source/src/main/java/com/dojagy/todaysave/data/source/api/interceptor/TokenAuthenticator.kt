@@ -1,28 +1,33 @@
 package com.dojagy.todaysave.data.source.api.interceptor
 
 import com.dojagy.todaysave.common.extension.DEFAULT
+import com.dojagy.todaysave.common.util.AuthEvent
+import com.dojagy.todaysave.common.util.AuthEventBus
+import com.dojagy.todaysave.data.domain.repository.TokenDatastoreRepository
+import com.dojagy.todaysave.data.domain.repository.UserDatastoreRepository
 import com.dojagy.todaysave.data.dto.user.TokenDto
 import com.dojagy.todaysave.data.dto.user.TokenReissueRequestDto
 import com.dojagy.todaysave.data.source.api.service.UserService
-import com.dojagy.todaysave.data.source.datastore.repo.TokenDatastoreRepositoryImpl
+import dagger.Lazy
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class TokenAuthenticator : Authenticator {
-
-    @Inject
-    lateinit var tokenRepo: TokenDatastoreRepositoryImpl
-
-    @Inject
-    lateinit var tokenApi: UserService
+@Singleton
+class TokenAuthenticator @Inject constructor(
+    private val tokenRepo: TokenDatastoreRepository,
+    private val userRepo: UserDatastoreRepository,
+    private val tokenApi: Lazy<UserService>,
+    private val authEventBus: AuthEventBus
+) : Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {
-        // 현재 저장된 토큰 정보를 가져온다.
-        val currentToken = tokenRepo.currentToken
+        // 기존의 currentToken을 runBlocking 안에서 가져오도록 수정하여 최신성을 보장합니다.
+        val currentToken = runBlocking { tokenRepo.currentToken } // suspend 함수를 호출하도록 변경
 
         // 리프레시 토큰이 없으면 갱신 시도조차 할 수 없으므로 포기.
         val refreshToken = currentToken?.refreshToken ?: return null
@@ -41,7 +46,7 @@ class TokenAuthenticator : Authenticator {
             // Authenticator는 동기 컨텍스트이므로 runBlocking을 사용하여 suspend 함수 호출
             val newTokens: TokenDto? = runBlocking {
                 try {
-                    val reissueResponse = tokenApi.tokenReissue(
+                    val reissueResponse = tokenApi.get().tokenReissue(
                         TokenReissueRequestDto(
                             accessToken = accessToken,
                             refreshToken = refreshToken
@@ -75,7 +80,11 @@ class TokenAuthenticator : Authenticator {
                     accessToken = newTokens.accessToken ?: String.DEFAULT
                 )
             } else {
-                // 갱신 실패: null을 반환하여 재시도 포기
+                runBlocking {
+                    tokenRepo.clearTokens()
+                    userRepo.clearUser()
+                    authEventBus.postEvent(AuthEvent.LOGOUT_SUCCESS)
+                }
                 null
             }
         }
