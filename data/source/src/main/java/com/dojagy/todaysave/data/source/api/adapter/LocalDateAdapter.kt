@@ -7,7 +7,6 @@ import com.google.gson.stream.JsonWriter
 import java.io.IOException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import kotlin.jvm.Throws
 
 class LocalDateAdapter : TypeAdapter<LocalDate>() {
 

@@ -5,6 +5,7 @@ import com.dojagy.todaysave.common.android.base.BaseUiEffect
 import com.dojagy.todaysave.common.android.base.BaseUiEvent
 import com.dojagy.todaysave.common.android.base.BaseUiState
 import com.dojagy.todaysave.common.android.base.BaseViewModel
+import com.dojagy.todaysave.core.resources.wrapper.UiText
 import com.dojagy.todaysave.data.domain.onFailure
 import com.dojagy.todaysave.data.domain.onSuccess
 import com.dojagy.todaysave.data.domain.usecase.UserUseCase
@@ -89,7 +90,7 @@ class LoginViewModel @Inject constructor(
     fun showErrorSnackBar(
         msg: String
     ) {
-        showSnackBar(message = msg)
+        showSnackBar(message = UiText.DynamicString(msg))
     }
 }
 

@@ -1,7 +1,6 @@
 package com.dojagy.todaysave.ui.auth.join
 
 import android.content.Intent
-import android.net.Uri
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,6 +29,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dojagy.todaysave.common.android.base.BaseUiEffect
 import com.dojagy.todaysave.common.extension.DEFAULT
@@ -45,7 +45,6 @@ import com.dojagy.todaysave.data.view.text.TsTextField
 import com.dojagy.todaysave.ui.auth.join.screen.TermsCheckBottomSheet
 import com.dojagy.todaysave.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import androidx.core.net.toUri
 
 @AndroidEntryPoint
 class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewModel>() {
@@ -58,6 +57,8 @@ class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewMode
         val focusManager = LocalFocusManager.current
 
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        val randomNickname = uiState.randomNickname.asString()
+        val selectedNickname = uiState.selectedNickname.asString()
         var inputNickname by remember {
             mutableStateOf(TextFieldValue(String.DEFAULT))
         }
@@ -74,15 +75,15 @@ class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewMode
         val focusRequester = remember { FocusRequester() }
 
         LaunchedEffect(uiState) {
-            if (uiState.randomNickname.isNotBlank()) {
+            if (randomNickname.isNotBlank()) {
                 inputNickname = TextFieldValue(
-                    text = uiState.randomNickname,
-                    selection = TextRange(uiState.randomNickname.length)
+                    text = randomNickname,
+                    selection = TextRange(randomNickname.length)
                 )
                 bottomBtnEnable = true
             }
 
-            isTermsBottomSheetShow = uiState.isNicknameChecked && uiState.selectedNickname.isNotBlank()
+            isTermsBottomSheetShow = uiState.isNicknameChecked && selectedNickname.isNotBlank()
         }
 
         LaunchedEffect(requestFocus) {
@@ -162,12 +163,12 @@ class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewMode
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                if (uiState.nicknameErrorMessage.isNotBlank()) {
+                if (uiState.nicknameErrorMessage.asString().isNotBlank()) {
                     TsText(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp),
-                        text = uiState.nicknameErrorMessage,
+                        text = uiState.nicknameErrorMessage.asString(),
                         color = Red,
                         size = 14.sp,
                         fontWeight = FontWeight.Medium,
@@ -201,7 +202,7 @@ class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewMode
                             email = intent.getStringExtra("email") ?: String.DEFAULT,
                             snsType = intent.getStringExtra("snsType") ?: String.DEFAULT,
                             snsKey = intent.getStringExtra("snsKey") ?: String.DEFAULT,
-                            nickname = uiState.selectedNickname
+                            nickname = selectedNickname
                         ))
                     }
                 )
@@ -219,7 +220,7 @@ class JoinActivity : BaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewMode
             }
 
             is JoinEffect.StartTermsWeb -> {
-                val browserIntent = Intent(Intent.ACTION_VIEW, effect.term.url?.toUri())
+                val browserIntent = Intent(Intent.ACTION_VIEW, effect.term.url?.asString(this)?.toUri())
                 startActivity(browserIntent)
             }
         }

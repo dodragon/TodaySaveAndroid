@@ -2,8 +2,6 @@ package com.dojagy.todaysave.ui.auth.join.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Row
@@ -23,7 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -189,6 +187,8 @@ fun TermsNormalCheck(
     onCheckedChange: (Boolean) -> Unit,
     onClickTermShow: (url: String) -> Unit
 ) {
+    val context = LocalContext.current
+
     Row(
         modifier = modifier
             .fillMaxWidth(),
@@ -209,7 +209,7 @@ fun TermsNormalCheck(
                 modifier = Modifier
                     .padding(vertical = 12.dp)
                     .weight(1f),
-                termText = term.text,
+                termText = term.text.asString(),
                 isChecked = isChecked
             )
         }
@@ -219,7 +219,7 @@ fun TermsNormalCheck(
                 modifier = Modifier
                     .padding(vertical = 12.dp, horizontal = 28.dp)
                     .clickableSingle {
-                        onClickTermShow(term.url)
+                        onClickTermShow(term.url.asString(context))
                     },
                 text = stringResource(R.string.show),
                 size = 14.sp,

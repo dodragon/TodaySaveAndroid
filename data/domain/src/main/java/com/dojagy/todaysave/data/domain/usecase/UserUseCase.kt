@@ -2,11 +2,11 @@ package com.dojagy.todaysave.data.domain.usecase
 
 import com.dojagy.todaysave.common.extension.isFalse
 import com.dojagy.todaysave.data.domain.Return
-import com.dojagy.todaysave.data.domain.repository.UserApiRepository
-import com.dojagy.todaysave.data.domain.repository.UserDatastoreRepository
 import com.dojagy.todaysave.data.domain.onSuccess
 import com.dojagy.todaysave.data.domain.repository.SettingDatastoreRepository
 import com.dojagy.todaysave.data.domain.repository.TokenDatastoreRepository
+import com.dojagy.todaysave.data.domain.repository.UserApiRepository
+import com.dojagy.todaysave.data.domain.repository.UserDatastoreRepository
 import com.dojagy.todaysave.data.model.user.LoginResultModel
 import com.dojagy.todaysave.data.model.user.SnsType
 import com.dojagy.todaysave.data.model.user.UserModel

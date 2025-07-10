@@ -3,9 +3,7 @@ package com.dojagy.todaysave.common.util
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.LogLevel
 import io.github.aakira.napier.Napier
-import kotlin.collections.forEach
 import kotlin.reflect.full.memberProperties
-import kotlin.toString
 
 object DLog {
 

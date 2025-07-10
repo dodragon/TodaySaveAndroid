@@ -1,5 +1,6 @@
 package com.dojagy.todaysave.common.android.base
 
+import com.dojagy.todaysave.core.resources.wrapper.UiText
 import java.util.UUID
 
 /**
@@ -21,8 +22,8 @@ interface BaseUiEffect {
 
 data class SnackBarMessage<out V : BaseUiEvent>(
     val id: String = UUID.randomUUID().toString(),
-    val title: String? = null,
-    val message: String,
+    val title: UiText? = null,
+    val message: UiText,
     val type: SnackBarType = SnackBarType.Normal,
     val dismissType: DismissType<V>
 )

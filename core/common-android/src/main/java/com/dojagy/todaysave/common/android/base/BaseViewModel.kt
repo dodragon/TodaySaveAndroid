@@ -2,6 +2,7 @@ package com.dojagy.todaysave.common.android.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dojagy.todaysave.core.resources.wrapper.UiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,8 +35,8 @@ abstract class BaseViewModel<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent>
     }
 
     protected fun showSnackBar(
-        title: String? = null,
-        message: String,
+        title: UiText? = null,
+        message: UiText,
         type: SnackBarType = SnackBarType.Normal,
         dismissType: DismissType<V> = DismissType.Automatic
     ) {

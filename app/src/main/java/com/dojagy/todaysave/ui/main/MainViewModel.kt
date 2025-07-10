@@ -2,11 +2,9 @@ package com.dojagy.todaysave.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dojagy.todaysave.common.android.base.BaseViewModel
 import com.dojagy.todaysave.data.domain.onSuccess
 import com.dojagy.todaysave.data.domain.usecase.UserUseCase
 import com.dojagy.todaysave.data.model.user.UserModel
-import com.dojagy.todaysave.ui.splash.SplashViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

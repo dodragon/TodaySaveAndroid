@@ -1,7 +1,5 @@
 package com.dojagy.todaysave.data.view.checkbox
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -9,9 +7,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -23,7 +18,6 @@ import com.airbnb.lottie.compose.rememberLottieAnimatable
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.dojagy.todaysave.core.resources.R
 import com.dojagy.todaysave.core.resources.theme.Gray4
-import com.dojagy.todaysave.core.resources.theme.Gray6
 import com.dojagy.todaysave.data.view.clickableNoRipple
 
 @Composable

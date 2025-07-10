@@ -1,7 +1,7 @@
 package com.dojagy.todaysave.data.view.button
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -17,12 +17,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.dojagy.todaysave.common.extension.isFalse
 import com.dojagy.todaysave.common.extension.isTrue
 import com.dojagy.todaysave.core.resources.theme.Gray4
 import com.dojagy.todaysave.core.resources.theme.Gray7
 import com.dojagy.todaysave.data.view.CLICK_INTERVAL
-import com.dojagy.todaysave.data.view.clickableSingle
 import com.dojagy.todaysave.data.view.text.TsText
 
 @Composable
@@ -41,8 +39,7 @@ fun FullSizeRadiusButton(
 
     Button(
         modifier = modifier
-            .fillMaxWidth()
-            .height(56.dp),
+            .fillMaxWidth(),
         colors = colors,
         enabled = enabled,
         shape = RoundedCornerShape(8.dp),
@@ -59,10 +56,12 @@ fun FullSizeRadiusButton(
         }
     ) {
         TsText(
+            modifier = Modifier
+                .padding(vertical = 18.dp),
             text = text,
             align = TextAlign.Center,
             color = Color.White,
-            size = 16.sp,
+            size = 17.sp,
             fontWeight = FontWeight.Bold
         )
     }

@@ -6,7 +6,6 @@ import com.dojagy.todaysave.common.android.base.BaseUiEvent
 import com.dojagy.todaysave.common.android.base.BaseUiState
 import com.dojagy.todaysave.common.android.base.BaseViewModel
 import com.dojagy.todaysave.common.extension.isTrue
-import com.dojagy.todaysave.common.util.DLog
 import com.dojagy.todaysave.data.domain.usecase.UserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope

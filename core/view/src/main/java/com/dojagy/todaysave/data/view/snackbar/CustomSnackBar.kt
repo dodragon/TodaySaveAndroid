@@ -34,7 +34,6 @@ import com.dojagy.todaysave.common.android.base.DismissType
 import com.dojagy.todaysave.common.android.base.SnackBarMessage
 import com.dojagy.todaysave.common.android.base.SnackBarType
 import kotlinx.coroutines.delay
-import kotlin.collections.forEach
 
 @Composable
 fun <T : BaseUiEvent> CustomSnackBarHost(
@@ -107,7 +106,7 @@ private fun <T : BaseUiEvent> CustomSnackBarItem(
                     val titleMessage = message.title
                     titleMessage?.let {
                         Text(
-                            text = titleMessage,
+                            text = titleMessage.asString(),
                             color = contentColor,
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
@@ -116,7 +115,7 @@ private fun <T : BaseUiEvent> CustomSnackBarItem(
                     }
 
                     Text(
-                        text = message.message,
+                        text = message.message.asString(),
                         color = contentColor,
                         style = MaterialTheme.typography.bodyMedium
                     )

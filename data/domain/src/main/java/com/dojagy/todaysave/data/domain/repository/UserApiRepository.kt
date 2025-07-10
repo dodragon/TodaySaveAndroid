@@ -1,7 +1,7 @@
 package com.dojagy.todaysave.data.domain.repository
 
-import com.dojagy.todaysave.data.model.user.LoginResultModel
 import com.dojagy.todaysave.data.model.MainModel
+import com.dojagy.todaysave.data.model.user.LoginResultModel
 import com.dojagy.todaysave.data.model.user.SnsType
 import com.dojagy.todaysave.data.model.user.UserModel
 import kotlinx.coroutines.flow.Flow

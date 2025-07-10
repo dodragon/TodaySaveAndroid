@@ -13,7 +13,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.toString
 
 class GoogleLogin(
     private val context: Context,

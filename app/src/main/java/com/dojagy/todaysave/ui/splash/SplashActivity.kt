@@ -14,13 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.dojagy.todaysave.data.view.BaseActivity
 import com.dojagy.todaysave.common.android.base.BaseUiEffect
 import com.dojagy.todaysave.common.android.extension.goMarket
+import com.dojagy.todaysave.data.view.BaseActivity
 import com.dojagy.todaysave.ui.auth.login.LoginActivity
 import com.dojagy.todaysave.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.jvm.java
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint

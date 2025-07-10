@@ -7,11 +7,14 @@ import com.dojagy.todaysave.common.android.base.BaseUiState
 import com.dojagy.todaysave.common.android.base.BaseViewModel
 import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.common.extension.isFalse
+import com.dojagy.todaysave.core.resources.R
+import com.dojagy.todaysave.core.resources.wrapper.UiText
 import com.dojagy.todaysave.data.domain.onFailure
 import com.dojagy.todaysave.data.domain.onSuccess
 import com.dojagy.todaysave.data.domain.usecase.UserUseCase
 import com.dojagy.todaysave.data.model.user.SnsType
-import com.dojagy.todaysave.ui.auth.join.JoinEffect.*
+import com.dojagy.todaysave.ui.auth.join.JoinEffect.StartOnboard
+import com.dojagy.todaysave.ui.auth.join.JoinEffect.StartTermsWeb
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,8 +30,8 @@ class JoinViewModel @Inject constructor(
         listOf(
             TermsCheck(
                 term = Term(
-                    text = "(필수) 만 14세 이상",
-                    title = "14세 이상",
+                    text = UiText.StringResource(R.string.age_term_text),
+                    title = UiText.StringResource(R.string.age_term_title),
                     type = CheckTermType.AGE,
                     url = null
                 ),
@@ -36,19 +39,19 @@ class JoinViewModel @Inject constructor(
             ),
             TermsCheck(
                 term = Term(
-                    text = "(필수) 개인정보 처리방침 동의",
-                    title = "개인정보 처리방침",
+                    text = UiText.StringResource(R.string.personal_term_text),
+                    title = UiText.StringResource(R.string.personal_term_title),
                     type = CheckTermType.PERSONAL,
-                    url = "https://celestial-face-615.notion.site/22a2a7cac6a180cda6c7fce8c6ecbde1?source=copy_link"
+                    url = UiText.StringResource(R.string.personal_term_url)
                 ),
                 isCheck = false
             ),
             TermsCheck(
                 term = Term(
-                    text = "(필수) 이용약관 동의",
-                    title = "이용약관",
+                    text = UiText.StringResource(R.string.usable_term_text),
+                    title = UiText.StringResource(R.string.usable_term_title),
                     type = CheckTermType.USABLE,
-                    url = "https://celestial-face-615.notion.site/22a2a7cac6a180028cc1e7530961172c?source=copy_link"
+                    url = UiText.StringResource(R.string.usable_term_url)
                 ),
                 isCheck = false
             )
@@ -70,7 +73,7 @@ class JoinViewModel @Inject constructor(
                 .onSuccess {
                     setState {
                         copy(
-                            randomNickname = it,
+                            randomNickname = UiText.DynamicString(it),
                             isLoading = false
                         )
                     }
@@ -87,13 +90,13 @@ class JoinViewModel @Inject constructor(
                     setState {
                         copy(
                             isNicknameChecked = true,
-                            selectedNickname = nickname
+                            selectedNickname = UiText.DynamicString(nickname)
                         )
                     }
                 }.onFailure {
                     setState {
                         copy(
-                            nicknameErrorMessage = "이미 있는 닉네임이에요. 다른 닉네임을 입력해 주세요."
+                            nicknameErrorMessage = UiText.StringResource(R.string.join_nickname_duplicate_error)
                         )
                     }
                 }
@@ -115,7 +118,7 @@ class JoinViewModel @Inject constructor(
             ).onSuccess {
                 postEffect(StartOnboard)
             }.onFailure { msg ->
-                showSnackBar(message = msg)
+                showSnackBar(message = UiText.DynamicString(msg))
             }
         }
     }
@@ -145,7 +148,7 @@ class JoinViewModel @Inject constructor(
             is JoinEvent.OnClickJoin -> {
                 terms.value.map {
                     if(it.isCheck.isFalse()) {
-                        showSnackBar(message = "${it.term.title}에 동의해주세요.")
+                        showSnackBar(message = UiText.StringResource(R.string.terms_check_error_message, it.term.title))
                         return@handleEvent
                     }
                 }
@@ -165,19 +168,19 @@ class JoinViewModel @Inject constructor(
                 if(inputNickname.isBlank()) {
                     setState {
                         copy(
-                            nicknameErrorMessage = "닉네임을 입력해 주세요"
+                            nicknameErrorMessage = UiText.StringResource(R.string.nickname_empty_error_message)
                         )
                     }
                 }else if(Regex("^[a-zA-Z0-9가-힣]*$").matches(inputNickname).isFalse()) {
                     setState {
                         copy(
-                            nicknameErrorMessage = "닉네임에는 특수문자나 공백을 포함할 수 없습니다"
+                            nicknameErrorMessage = UiText.StringResource(R.string.nickname_regex_error_message)
                         )
                     }
                 }else if(inputNickname.length < 2 || inputNickname.length > 12) {
                     setState {
                         copy(
-                            nicknameErrorMessage = "닉네임은 2~12자 이내로 작성해주세요"
+                            nicknameErrorMessage = UiText.StringResource(R.string.nickname_length_error_message)
                         )
                     }
                 }else {
@@ -187,10 +190,10 @@ class JoinViewModel @Inject constructor(
             is JoinEvent.OnNicknameChange -> {
                 setState {
                     copy(
-                        selectedNickname = String.DEFAULT,
+                        selectedNickname = UiText.DynamicString(String.DEFAULT),
                         isNicknameChecked = false,
-                        nicknameErrorMessage = String.DEFAULT,
-                        randomNickname = String.DEFAULT
+                        nicknameErrorMessage = UiText.DynamicString(String.DEFAULT),
+                        randomNickname = UiText.DynamicString(String.DEFAULT)
                     )
                 }
             }
@@ -198,7 +201,7 @@ class JoinViewModel @Inject constructor(
                 setState {
                     copy(
                         isNicknameChecked = false,
-                        selectedNickname = String.DEFAULT
+                        selectedNickname = UiText.DynamicString(String.DEFAULT)
                     )
                 }
             }
@@ -212,17 +215,17 @@ data class TermsCheck(
 )
 
 data class Term(
-    val text: String,
-    val title: String,
+    val text: UiText,
+    val title: UiText,
     val type: CheckTermType,
-    val url: String?
+    val url: UiText?
 )
 
 data class JoinState(
-    val randomNickname: String = String.DEFAULT,
-    val selectedNickname: String = String.DEFAULT,
+    val randomNickname: UiText = UiText.DynamicString(String.DEFAULT),
+    val selectedNickname: UiText = UiText.DynamicString(String.DEFAULT),
     val isNicknameChecked: Boolean = false,
-    val nicknameErrorMessage: String = String.DEFAULT,
+    val nicknameErrorMessage: UiText = UiText.DynamicString(String.DEFAULT),
     override val isLoading: Boolean = false
 ) : BaseUiState
 

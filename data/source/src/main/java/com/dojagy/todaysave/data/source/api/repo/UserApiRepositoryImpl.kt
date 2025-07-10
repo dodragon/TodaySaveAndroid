@@ -3,11 +3,11 @@ package com.dojagy.todaysave.data.source.api.repo
 import com.dojagy.todaysave.data.domain.repository.UserApiRepository
 import com.dojagy.todaysave.data.dto.user.JoinRequestDto
 import com.dojagy.todaysave.data.dto.user.LoginRequestDto
-import com.dojagy.todaysave.data.model.user.LoginResultModel
 import com.dojagy.todaysave.data.model.MainModel
+import com.dojagy.todaysave.data.model.mapper
+import com.dojagy.todaysave.data.model.user.LoginResultModel
 import com.dojagy.todaysave.data.model.user.SnsType
 import com.dojagy.todaysave.data.model.user.UserModel
-import com.dojagy.todaysave.data.model.mapper
 import com.dojagy.todaysave.data.source.api.service.UserService
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

@@ -11,10 +11,24 @@
     <string name="last_login">최근 로그인</string>
 
     <string name="join_title">만나서 반가워요!\n닉네임을 입력해 주세요</string>
+    <string name="join_term_bottom_sheet_title">꼭 필요한 동의만 하고\n오늘저장을 시작해 봐요</string>
     <string name="join_nickname_hint">2글자 이상</string>
     <string name="join_nickname_info">닉네임은 언제든 바꿀 수 있어요</string>
     <string name="join_nickname_duplicate_error">이미 있는 닉네임이에요. 다른 닉네임을 입력해 주세요.</string>
 
-    <string name="join_term_bottom_sheet_title">꼭 필요한 동의만 하고\n오늘저장을 시작해 봐요</string>
+    <string name="nickname_empty_error_message">닉네임을 입력해 주세요.</string>
+    <string name="nickname_regex_error_message">닉네임에는 특수문자나 공백을 포함할 수 없습니다.</string>
+    <string name="nickname_length_error_message">닉네임은 2~12자 이내로 작성해주세요.</string>
+
+    <string name="age_term_text">(필수) 만 14세 이상</string>
+    <string name="personal_term_text">(필수) 개인정보 처리방침 동의</string>
+    <string name="usable_term_text">(필수) 이용약관 동의</string>
+    <string name="age_term_title">14세 이상</string>
+    <string name="personal_term_title">개인정보 처리방침</string>
+    <string name="usable_term_title">이용약관</string>
+    <string name="personal_term_url">https://celestial-face-615.notion.site/22a2a7cac6a180cda6c7fce8c6ecbde1?source=copy_link</string>
+    <string name="usable_term_url">https://celestial-face-615.notion.site/22a2a7cac6a180028cc1e7530961172c?source=copy_link</string>
+
+    <string name="terms_check_error_message">%s에 동의해주세요.</string>
 
 </resources>
