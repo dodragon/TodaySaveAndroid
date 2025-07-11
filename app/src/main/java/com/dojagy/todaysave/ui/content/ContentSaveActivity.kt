@@ -5,20 +5,32 @@ import android.content.Intent
 import android.util.Patterns
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.common.extension.isTrue
-import com.dojagy.todaysave.common.util.DLog.toIfDataClass
-import com.dojagy.todaysave.data.view.BaseActivity
+import com.dojagy.todaysave.common.util.DLog
+import com.dojagy.todaysave.core.resources.theme.Gray4
+import com.dojagy.todaysave.core.resources.theme.Gray7
+import com.dojagy.todaysave.data.view.text.TsText
 import com.dojagy.todaysave.util.AppBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.regex.Matcher
 
 @AndroidEntryPoint
 class ContentSaveActivity : AppBaseActivity<ContentSaveState, ContentSaveEffect, ContentSaveEvent, ContentSaveViewModel>() {
@@ -33,22 +45,163 @@ class ContentSaveActivity : AppBaseActivity<ContentSaveState, ContentSaveEffect,
     @Composable
     override fun Content() {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        val metadata = uiState.metadata
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
-            Text(
+            Spacer(modifier = Modifier.height(80.dp))
+
+            TsText(
                 modifier = Modifier
-                    .padding(start = 20.dp, top = 60.dp),
-                text = "링크 : ${sharedLink()}"
+                    .padding(start = 16.dp),
+                text = "공유한 링크",
+                size = 12.sp,
+                fontWeight = FontWeight.Normal,
+                color = Gray4
             )
 
-            Text(
+            TsText(
                 modifier = Modifier
-                    .padding(start = 20.dp, top = 60.dp),
-                text = "메타데이터 : ${uiState.metadata.toIfDataClass()}"
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
+                    .padding(horizontal = 16.dp),
+                text = metadata?.url ?: null.toString(),
+                size = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = Gray7
             )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            TsText(
+                modifier = Modifier
+                    .padding(start = 16.dp),
+                text = "캐노니컬 링크",
+                size = 12.sp,
+                fontWeight = FontWeight.Normal,
+                color = Gray4
+            )
+
+            TsText(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
+                    .padding(horizontal = 16.dp),
+                text = metadata?.canonicalUrl ?: null.toString(),
+                size = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = Gray7
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            TsText(
+                modifier = Modifier
+                    .padding(start = 16.dp),
+                text = "썸네일",
+                size = 12.sp,
+                fontWeight = FontWeight.Normal,
+                color = Gray4
+            )
+
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
+                    .padding(horizontal = 16.dp),
+                model = metadata?.thumbnailUrl,
+                contentDescription = null
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            TsText(
+                modifier = Modifier
+                    .padding(start = 16.dp),
+                text = "파비콘",
+                size = 12.sp,
+                fontWeight = FontWeight.Normal,
+                color = Gray4
+            )
+
+            AsyncImage(
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(start = 16.dp),
+                model = metadata?.faviconUrl,
+                contentDescription = null
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            TsText(
+                modifier = Modifier
+                    .padding(start = 16.dp),
+                text = "타이틀",
+                size = 12.sp,
+                fontWeight = FontWeight.Normal,
+                color = Gray4
+            )
+
+            TsText(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
+                    .padding(horizontal = 16.dp),
+                text = metadata?.title ?: null.toString(),
+                size = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = Gray7
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            TsText(
+                modifier = Modifier
+                    .padding(start = 16.dp),
+                text = "디스크립션",
+                size = 12.sp,
+                fontWeight = FontWeight.Normal,
+                color = Gray4
+            )
+
+            TsText(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
+                    .padding(horizontal = 16.dp),
+                text = metadata?.description ?: null.toString(),
+                size = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = Gray7
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            TsText(
+                modifier = Modifier
+                    .padding(start = 16.dp),
+                text = "링크타입",
+                size = 12.sp,
+                fontWeight = FontWeight.Normal,
+                color = Gray4
+            )
+
+            TsText(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
+                    .padding(horizontal = 16.dp),
+                text = metadata?.linkType ?: null.toString(),
+                size = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = Gray7
+            )
+
+            Spacer(modifier = Modifier.height(60.dp))
         }
     }
 
@@ -69,7 +222,9 @@ class ContentSaveActivity : AppBaseActivity<ContentSaveState, ContentSaveEffect,
 
     private fun sharedLink(): String? {
         return if(intent?.action == Intent.ACTION_SEND && intent?.type == "text/plain") {
-            urlCheck(intent.getStringExtra(Intent.EXTRA_TEXT))
+            val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
+            DLog.e("sharedText", sharedText)
+            urlCheck(sharedText)
         }else {
             null
         }
@@ -89,8 +244,9 @@ class ContentSaveActivity : AppBaseActivity<ContentSaveState, ContentSaveEffect,
     private fun urlCheck(
         text: String?
     ): String? {
-        return if(Patterns.WEB_URL.matcher(text ?: String.DEFAULT).matches()) {
-            text
+        val matcher: Matcher = Patterns.WEB_URL.matcher(text ?: String.DEFAULT)
+        return if(matcher.find()) {
+            matcher.group()
         }else {
             null
         }

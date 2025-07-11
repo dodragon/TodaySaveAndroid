@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dojagy.todaysave.common.util.Return
 import com.dojagy.todaysave.common.util.onInvalidToken
-import com.dojagy.todaysave.common.util.onSuccess
 import com.dojagy.todaysave.core.resources.wrapper.UiText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel

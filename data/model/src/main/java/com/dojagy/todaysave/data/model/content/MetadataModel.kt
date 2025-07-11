@@ -9,5 +9,5 @@ data class MetadataModel(
     val thumbnailUrl: String = String.DEFAULT,
     val faviconUrl: String = String.DEFAULT,
     val canonicalUrl: String = String.DEFAULT,
-    val linkType: String = "일반 링크"
+    val linkType: String = "GENERAL"
 )
