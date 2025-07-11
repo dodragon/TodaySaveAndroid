@@ -18,6 +18,7 @@ interface BaseUiEffect {
     data class ShowSnackBar<out V : BaseUiEvent>(
         val snackBarData: SnackBarMessage<V>
     ) : BaseUiEffect
+    data object InvalidToken : BaseUiEffect
 }
 
 data class SnackBarMessage<out V : BaseUiEvent>(

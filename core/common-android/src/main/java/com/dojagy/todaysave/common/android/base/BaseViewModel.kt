@@ -2,7 +2,11 @@ package com.dojagy.todaysave.common.android.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dojagy.todaysave.common.util.Return
+import com.dojagy.todaysave.common.util.onInvalidToken
+import com.dojagy.todaysave.common.util.onSuccess
 import com.dojagy.todaysave.core.resources.wrapper.UiText
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,6 +35,17 @@ abstract class BaseViewModel<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent>
     protected fun postEffect(effect: BaseUiEffect) {
         viewModelScope.launch {
             _uiEffect.send(effect)
+        }
+    }
+
+    protected fun <T> request(
+        method: suspend CoroutineScope.() -> Return<T>
+    ) {
+        viewModelScope.launch {
+            method.invoke(this)
+                .onInvalidToken {
+                    postEffect(BaseUiEffect.InvalidToken)
+                }
         }
     }
 

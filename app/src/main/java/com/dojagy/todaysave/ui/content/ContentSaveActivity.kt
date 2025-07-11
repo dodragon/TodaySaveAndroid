@@ -16,6 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.common.extension.isTrue
 import com.dojagy.todaysave.common.util.DLog.toIfDataClass
+import com.dojagy.todaysave.data.view.BaseActivity
 import com.dojagy.todaysave.util.AppBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 

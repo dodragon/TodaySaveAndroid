@@ -1,8 +1,8 @@
 package com.dojagy.todaysave.data.domain.usecase
 
 import com.dojagy.todaysave.common.extension.isFalse
-import com.dojagy.todaysave.data.domain.Return
-import com.dojagy.todaysave.data.domain.onSuccess
+import com.dojagy.todaysave.common.util.Return
+import com.dojagy.todaysave.common.util.onSuccess
 import com.dojagy.todaysave.data.domain.repository.SettingDatastoreRepository
 import com.dojagy.todaysave.data.domain.repository.TokenDatastoreRepository
 import com.dojagy.todaysave.data.domain.repository.UserApiRepository

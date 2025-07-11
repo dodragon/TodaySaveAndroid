@@ -1,7 +1,7 @@
 package com.dojagy.todaysave.data.domain.usecase
 
 import com.dojagy.todaysave.common.extension.isTrue
-import com.dojagy.todaysave.data.domain.Return
+import com.dojagy.todaysave.common.util.Return
 import com.dojagy.todaysave.data.model.ApiState
 import com.dojagy.todaysave.data.model.MainModel
 import kotlinx.coroutines.flow.Flow
@@ -33,20 +33,23 @@ open class BaseUseCase {
             ApiState.SUCCESS -> {
                 val resultData = model.data
                 if (resultData != null) {
-                    Return.Companion.success(resultData)
+                    Return.success(resultData)
                 } else {
                     if(isNeedData.isTrue()) {
-                        Return.Companion.failure(model.message ?: "데이터가 없습니다.")
+                        Return.failure(model.message ?: "데이터가 없습니다.")
                     }else {
-                        Return.Companion.success()
+                        Return.success()
                     }
                 }
             }
             ApiState.DEFAULT -> {
-                Return.Companion.failure(model.message ?: "응답을 받지 못했습니다.")
+                Return.failure(model.message ?: "응답을 받지 못했습니다.")
+            }
+            ApiState.INVALID_TOKEN -> {
+                Return.invalidToken()
             }
             else -> {
-                Return.Companion.failure(model.message ?: "오류가 발생했습니다.")
+                Return.failure(model.message ?: "오류가 발생했습니다.")
             }
         }
     }

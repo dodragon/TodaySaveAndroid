@@ -5,7 +5,7 @@ import com.dojagy.todaysave.common.android.base.BaseUiEffect
 import com.dojagy.todaysave.common.android.base.BaseUiEvent
 import com.dojagy.todaysave.common.android.base.BaseUiState
 import com.dojagy.todaysave.common.android.base.BaseViewModel
-import com.dojagy.todaysave.data.domain.onSuccess
+import com.dojagy.todaysave.common.util.onSuccess
 import com.dojagy.todaysave.data.domain.usecase.ContentUseCase
 import com.dojagy.todaysave.data.domain.usecase.UserUseCase
 import com.dojagy.todaysave.data.model.content.MetadataModel
@@ -39,7 +39,7 @@ class ContentSaveViewModel @Inject constructor(
     fun requestMetadata(
         url: String
     ) {
-        viewModelScope.launch {
+        request {
             contentUseCase.metadata(url)
                 .onSuccess {
                     setState {

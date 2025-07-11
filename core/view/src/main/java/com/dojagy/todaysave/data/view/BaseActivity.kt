@@ -50,15 +50,10 @@ abstract class BaseActivity<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent, 
 
     private var snackBarMessages by mutableStateOf<List<SnackBarMessage<V>>>(emptyList())
 
-    abstract val authEventHandler: AuthEventHandler
     abstract val loginActivityClassName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        authEventHandler.observeAuthEvents(this) {
-            handleLogout()
-        }
 
         enableEdgeToEdge()
 
@@ -71,8 +66,12 @@ abstract class BaseActivity<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent, 
                             snackBarMessages + (effect.snackBarData as SnackBarMessage<V>)
                     } else if (effect is BaseUiEffect.ShowToast) {
                         Toast.makeText(this@BaseActivity, effect.message, Toast.LENGTH_SHORT).show()
+                    } else if (effect is BaseUiEffect.InvalidToken) {
+                        val intent = Intent()
+                        intent.putExtra("message", "사용자 정보가 유효하지 않습니다.\n다시 로그인 해주세요.")
+                        startActivity(intent)
                     } else {
-                        defaultHandleEffect(effect)
+                        activityHandleEffect(effect)
                     }
                 }
             }
@@ -134,12 +133,6 @@ abstract class BaseActivity<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent, 
         }
     }
 
-    private fun defaultHandleEffect(
-        effect: BaseUiEffect
-    ) {
-        activityHandleEffect(effect)
-    }
-
     protected open fun activityHandleEffect(effect: BaseUiEffect) {}
 
     @Composable
@@ -171,8 +164,6 @@ abstract class BaseActivity<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent, 
         }
     }
 
-    abstract fun onBack()
-
     private fun handleLogout() {
         if (this::class.java.name == loginActivityClassName) return
 
@@ -181,4 +172,6 @@ abstract class BaseActivity<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent, 
         startActivity(intent)
         finish()
     }
+
+    abstract fun onBack()
 }

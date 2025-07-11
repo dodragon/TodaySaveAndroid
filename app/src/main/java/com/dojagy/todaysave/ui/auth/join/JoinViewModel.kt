@@ -9,8 +9,8 @@ import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.common.extension.isFalse
 import com.dojagy.todaysave.core.resources.R
 import com.dojagy.todaysave.core.resources.wrapper.UiText
-import com.dojagy.todaysave.data.domain.onFailure
-import com.dojagy.todaysave.data.domain.onSuccess
+import com.dojagy.todaysave.common.util.onFailure
+import com.dojagy.todaysave.common.util.onSuccess
 import com.dojagy.todaysave.data.domain.usecase.UserUseCase
 import com.dojagy.todaysave.data.model.user.SnsType
 import com.dojagy.todaysave.ui.auth.join.JoinEffect.StartOnboard

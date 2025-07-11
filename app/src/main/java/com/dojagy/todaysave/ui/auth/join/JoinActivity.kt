@@ -37,6 +37,7 @@ import com.dojagy.todaysave.core.resources.R
 import com.dojagy.todaysave.core.resources.theme.Gray4
 import com.dojagy.todaysave.core.resources.theme.Gray6
 import com.dojagy.todaysave.core.resources.theme.Red
+import com.dojagy.todaysave.data.view.BaseActivity
 import com.dojagy.todaysave.data.view.button.FullSizeRoundButton
 import com.dojagy.todaysave.data.view.clickableNoRipple
 import com.dojagy.todaysave.data.view.text.TsText

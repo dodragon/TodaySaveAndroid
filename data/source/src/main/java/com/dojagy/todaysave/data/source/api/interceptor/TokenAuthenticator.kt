@@ -1,8 +1,6 @@
 package com.dojagy.todaysave.data.source.api.interceptor
 
 import com.dojagy.todaysave.common.extension.DEFAULT
-import com.dojagy.todaysave.common.util.AuthEvent
-import com.dojagy.todaysave.common.util.AuthEventBus
 import com.dojagy.todaysave.data.domain.repository.TokenDatastoreRepository
 import com.dojagy.todaysave.data.domain.repository.UserDatastoreRepository
 import com.dojagy.todaysave.data.dto.user.TokenDto
@@ -21,8 +19,7 @@ import javax.inject.Singleton
 class TokenAuthenticator @Inject constructor(
     private val tokenRepo: TokenDatastoreRepository,
     private val userRepo: UserDatastoreRepository,
-    private val tokenApi: Lazy<UserService>,
-    private val authEventBus: AuthEventBus
+    private val tokenApi: Lazy<UserService>
 ) : Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {
@@ -83,7 +80,6 @@ class TokenAuthenticator @Inject constructor(
                 runBlocking {
                     tokenRepo.clearTokens()
                     userRepo.clearUser()
-                    authEventBus.postEvent(AuthEvent.LOGOUT_SUCCESS)
                 }
                 null
             }

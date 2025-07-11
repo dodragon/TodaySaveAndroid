@@ -25,7 +25,7 @@ open class BaseApiRepository {
             try {
                 // 1. 네트워크 요청 및 기본 응답 처리
                 val responseData = response.invoke()
-                val apiState = setApiStatue(responseData)
+                val apiState = setApiStatus(responseData)
                 val message = setMessage(apiState, responseData.body()?.message)
                 val data = responseData.body()?.data
 
@@ -80,7 +80,7 @@ open class BaseApiRepository {
         }
     }
 
-    private fun <E> setApiStatue(
+    private fun <E> setApiStatus(
         responseData: Response<MainDto<E>>
     ): ApiState {
         return when(responseData.code()) {

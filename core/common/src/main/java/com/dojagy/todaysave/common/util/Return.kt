@@ -1,4 +1,4 @@
-package com.dojagy.todaysave.data.domain
+package com.dojagy.todaysave.common.util
 
 class Return<T> private constructor(
     var status: Int,
@@ -9,6 +9,7 @@ class Return<T> private constructor(
     companion object {
         const val SUCCESS: Int = 0
         const val FAILURE: Int = 1
+        const val INVALID_TOKEN: Int = 2
 
         fun<T> success(): Return<T> {
             return Return(status = SUCCESS, value = null, message = null)
@@ -29,6 +30,10 @@ class Return<T> private constructor(
         fun<T> failure(message: String): Return<T> {
             return Return(status = FAILURE, value = null, message = message)
         }
+
+        fun<T> invalidToken(): Return<T> {
+            return Return(status = INVALID_TOKEN, value = null, message = null)
+        }
     }
 }
 
@@ -48,6 +53,15 @@ inline fun <reified T> Return<T>.onFailure(
 ): Return<T> {
     if (status == Return.FAILURE) {
         action(message ?: "오류가 발생했습니다.")
+    }
+    return this
+}
+
+inline fun <T> Return<T>.onInvalidToken(
+    action: () -> Unit
+): Return<T> {
+    if(status == Return.INVALID_TOKEN) {
+        action()
     }
     return this
 }

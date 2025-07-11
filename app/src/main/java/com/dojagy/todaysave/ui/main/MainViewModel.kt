@@ -2,7 +2,7 @@ package com.dojagy.todaysave.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dojagy.todaysave.data.domain.onSuccess
+import com.dojagy.todaysave.common.util.onSuccess
 import com.dojagy.todaysave.data.domain.usecase.UserUseCase
 import com.dojagy.todaysave.data.model.user.UserModel
 import dagger.hilt.android.lifecycle.HiltViewModel

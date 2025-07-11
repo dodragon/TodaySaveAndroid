@@ -6,8 +6,8 @@ import com.dojagy.todaysave.common.android.base.BaseUiEvent
 import com.dojagy.todaysave.common.android.base.BaseUiState
 import com.dojagy.todaysave.common.android.base.BaseViewModel
 import com.dojagy.todaysave.core.resources.wrapper.UiText
-import com.dojagy.todaysave.data.domain.onFailure
-import com.dojagy.todaysave.data.domain.onSuccess
+import com.dojagy.todaysave.common.util.onFailure
+import com.dojagy.todaysave.common.util.onSuccess
 import com.dojagy.todaysave.data.domain.usecase.UserUseCase
 import com.dojagy.todaysave.data.model.user.SnsType
 import dagger.hilt.android.lifecycle.HiltViewModel

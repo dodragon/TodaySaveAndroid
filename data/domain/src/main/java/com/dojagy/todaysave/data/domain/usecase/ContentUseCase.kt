@@ -1,6 +1,6 @@
 package com.dojagy.todaysave.data.domain.usecase
 
-import com.dojagy.todaysave.data.domain.Return
+import com.dojagy.todaysave.common.util.Return
 import com.dojagy.todaysave.data.domain.repository.ContentApiRepository
 import com.dojagy.todaysave.data.model.content.ContentModel
 import com.dojagy.todaysave.data.model.content.MetadataModel
