@@ -17,16 +17,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.dojagy.todaysave.common.android.util.CustomTabHelper
 import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.common.extension.isTrue
 import com.dojagy.todaysave.common.util.DLog
 import com.dojagy.todaysave.core.resources.theme.Gray4
 import com.dojagy.todaysave.core.resources.theme.Gray7
+import com.dojagy.todaysave.data.view.clickableNoRipple
 import com.dojagy.todaysave.data.view.text.TsText
 import com.dojagy.todaysave.util.AppBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,6 +50,8 @@ class ContentSaveActivity : AppBaseActivity<ContentSaveState, ContentSaveEffect,
     override fun Content() {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val metadata = uiState.metadata
+
+        val context = LocalContext.current
 
         Column(
             modifier = Modifier
@@ -67,11 +73,17 @@ class ContentSaveActivity : AppBaseActivity<ContentSaveState, ContentSaveEffect,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 4.dp)
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 16.dp)
+                    .clickableNoRipple {
+                        CustomTabHelper.openUrl(
+                            context = context,
+                            url = metadata?.url ?: String.DEFAULT
+                        )
+                    },
                 text = metadata?.url ?: null.toString(),
                 size = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = Gray7
+                color = Color.Blue
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -89,11 +101,17 @@ class ContentSaveActivity : AppBaseActivity<ContentSaveState, ContentSaveEffect,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 4.dp)
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 16.dp)
+                    .clickableNoRipple {
+                        CustomTabHelper.openUrl(
+                            context = context,
+                            url = metadata?.canonicalUrl ?: String.DEFAULT
+                        )
+                    },
                 text = metadata?.canonicalUrl ?: null.toString(),
                 size = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = Gray7
+                color = Color.Blue
             )
 
             Spacer(modifier = Modifier.height(24.dp))
