@@ -73,3 +73,9 @@ sealed interface ContentSaveEvent : BaseUiEvent {
 sealed interface ContentSaveEffect : BaseUiEffect {
 
 }
+
+enum class LinkSharedType {
+    APP_SHARE,
+    CLIPBOARD,
+    TYPE
+}

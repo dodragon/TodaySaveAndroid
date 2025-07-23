@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -227,15 +226,29 @@ class ContentSaveActivity : AppBaseActivity<ContentSaveState, ContentSaveEffect,
         finish()
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+    }
 
     override fun onResume() {
         super.onResume()
+    }
 
-        //아래것들을 가져와서 viewModel로 전달하여 처리하면 될 듯?
-        sharedLink()?.let {
-            viewModel.requestMetadata(it)
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if(hasFocus) {
+            var userShareLink = sharedLink()
+            if(userShareLink == null) {
+                userShareLink = clipboardLink()
+            }
+
+            DLog.e("SHARED_URL_RESULT", userShareLink)
+
+            userShareLink?.let {
+                viewModel.requestMetadata(it)
+            }
         }
-        clipboardLink()
     }
 
     private fun sharedLink(): String? {
@@ -251,8 +264,12 @@ class ContentSaveActivity : AppBaseActivity<ContentSaveState, ContentSaveEffect,
     private fun clipboardLink(): String? {
         val clipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
 
+        DLog.e("clipboardManager.hasPrimaryClip()", clipboardManager.hasPrimaryClip())
+        DLog.e("clipboardManager.primaryClipDescription?.hasMimeType(\"text/plain\").isTrue()", clipboardManager.primaryClipDescription?.hasMimeType("text/plain").isTrue())
+
         if(clipboardManager.hasPrimaryClip() && clipboardManager.primaryClipDescription?.hasMimeType("text/plain").isTrue()) {
             val item = clipboardManager.primaryClip?.getItemAt(0)
+            DLog.e("복사한거", item?.text?.toString())
             return urlCheck(item?.text?.toString())
         }
 

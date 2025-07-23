@@ -22,6 +22,7 @@ import com.dojagy.todaysave.core.resources.theme.TodaySaveTheme
 import com.dojagy.todaysave.data.view.button.FullSizeRoundButton
 import com.dojagy.todaysave.data.view.text.TsText
 import com.dojagy.todaysave.ui.auth.login.LoginActivity
+import com.dojagy.todaysave.ui.content.ContentSaveActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,6 +56,16 @@ class MainActivity : ComponentActivity() {
                     FullSizeRoundButton(
                         modifier = Modifier
                             .padding(horizontal = 16.dp),
+                        text = "컨텐츠 저장하기"
+                    ) {
+                        startActivity(Intent(context, ContentSaveActivity::class.java))
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    FullSizeRoundButton(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp),
                         text = "로그아웃"
                     ) {
                         viewModel.logout()
@@ -62,7 +73,7 @@ class MainActivity : ComponentActivity() {
                         finish()
                     }
 
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(40.dp))
                 }
             }
         }
