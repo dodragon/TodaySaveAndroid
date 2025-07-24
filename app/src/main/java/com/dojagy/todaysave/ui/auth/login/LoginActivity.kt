@@ -179,17 +179,22 @@ class LoginActivity : AppBaseActivity<LoginState, LoginEffect, LoginEvent, Login
             }
             is LoginEffect.LoginSuccess -> {
                 viewModel.setLastLogin(effect.type)
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
+                    putExtra("sharedLink", intent.getStringExtra("sharedLink"))
+                }
+                startActivity(intent)
                 finish()
             }
             is LoginEffect.LoginFail -> {
                 viewModel.showErrorSnackBar(effect.msg)
                 if (effect.joinData != null) {
-                    val intent = Intent(this@LoginActivity, JoinActivity::class.java)
-                    intent.putExtra("email", effect.joinData.email)
-                    intent.putExtra("snsType", effect.joinData.snsType)
-                    intent.putExtra("snsKey", effect.joinData.snsKey)
-                    intent.putExtra("nickname", effect.joinData.nickname)
+                    val intent = Intent(this@LoginActivity, JoinActivity::class.java).apply {
+                        putExtra("email", effect.joinData.email)
+                        putExtra("snsType", effect.joinData.snsType)
+                        putExtra("snsKey", effect.joinData.snsKey)
+                        putExtra("nickname", effect.joinData.nickname)
+                        putExtra("sharedLink", intent.getStringExtra("sharedLink"))
+                    }
                     startActivity(intent)
                 }
             }

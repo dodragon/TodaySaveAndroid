@@ -30,6 +30,8 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
+    //TODO: 회원가입이나 로그인에서 전달 받은 sharedLink intent Extra 처리 필요
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -58,7 +60,10 @@ class MainActivity : ComponentActivity() {
                             .padding(horizontal = 16.dp),
                         text = "컨텐츠 저장하기"
                     ) {
-                        startActivity(Intent(context, ContentSaveActivity::class.java))
+                        startActivity(
+                            Intent(context, ContentSaveActivity::class.java)
+                                .putExtra("isMain", true)
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(20.dp))

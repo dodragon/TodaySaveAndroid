@@ -37,7 +37,6 @@ import com.dojagy.todaysave.core.resources.R
 import com.dojagy.todaysave.core.resources.theme.Gray4
 import com.dojagy.todaysave.core.resources.theme.Gray6
 import com.dojagy.todaysave.core.resources.theme.Red
-import com.dojagy.todaysave.data.view.BaseActivity
 import com.dojagy.todaysave.data.view.button.FullSizeRoundButton
 import com.dojagy.todaysave.data.view.clickableNoRipple
 import com.dojagy.todaysave.data.view.text.TsText
@@ -217,7 +216,10 @@ class JoinActivity : AppBaseActivity<JoinState, JoinEffect, JoinEvent, JoinViewM
         when (effect) {
             is JoinEffect.StartOnboard -> {
                 //TODO: start onboard 일단 테스트로 메인으로 이동하게 하였음
-                startActivity(Intent(this@JoinActivity, MainActivity::class.java))
+                val intent = Intent(this@JoinActivity, MainActivity::class.java).apply {
+                    putExtra("sharedLink", intent.getStringExtra("sharedLink"))
+                }
+                startActivity(intent)
                 finish()
             }
 

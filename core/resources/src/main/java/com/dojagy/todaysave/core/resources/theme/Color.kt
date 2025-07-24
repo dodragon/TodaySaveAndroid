@@ -1,7 +1,6 @@
 package com.dojagy.todaysave.core.resources.theme
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 
 val Gray7 = Color(0xFF0A0A0A)
 val Gray6 = Color(0xFF393A3D)

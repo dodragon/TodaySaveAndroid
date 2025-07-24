@@ -39,6 +39,7 @@ import com.dojagy.todaysave.common.android.base.SnackBarMessage
 import com.dojagy.todaysave.common.extension.DEFAULT
 import com.dojagy.todaysave.core.resources.theme.TodaySaveTheme
 import com.dojagy.todaysave.data.view.snackbar.CustomSnackBarHost
+import com.dojagy.todaysave.core.resources.R
 import kotlinx.coroutines.launch
 
 abstract class BaseActivity<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent, VM : BaseViewModel<S, E, V>> :
@@ -55,6 +56,8 @@ abstract class BaseActivity<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent, 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewInit()
+
         enableEdgeToEdge()
 
         lifecycleScope.launch {
@@ -67,9 +70,7 @@ abstract class BaseActivity<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent, 
                     } else if (effect is BaseUiEffect.ShowToast) {
                         Toast.makeText(this@BaseActivity, effect.message, Toast.LENGTH_SHORT).show()
                     } else if (effect is BaseUiEffect.InvalidToken) {
-                        val intent = Intent()
-                        intent.putExtra("message", "사용자 정보가 유효하지 않습니다.\n다시 로그인 해주세요.")
-                        startActivity(intent)
+                        handleLogout()
                     } else {
                         activityHandleEffect(effect)
                     }
@@ -148,6 +149,8 @@ abstract class BaseActivity<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent, 
         modifier: Modifier
     ){}
 
+    open fun viewInit() {}
+
     @Composable
     protected fun StatusBarLightIcon() {
         val view = LocalView.current
@@ -169,6 +172,7 @@ abstract class BaseActivity<S : BaseUiState, E : BaseUiEffect, V : BaseUiEvent, 
 
         val intent = Intent().setClassName(this, loginActivityClassName)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.putExtra("message", getString(R.string.invalid_user_message))
         startActivity(intent)
         finish()
     }

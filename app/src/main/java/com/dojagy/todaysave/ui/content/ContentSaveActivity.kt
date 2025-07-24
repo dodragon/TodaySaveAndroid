@@ -22,17 +22,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import coil.compose.AsyncImage
 import com.dojagy.todaysave.common.android.util.CustomTabHelper
 import com.dojagy.todaysave.common.extension.DEFAULT
+import com.dojagy.todaysave.common.extension.isFalse
 import com.dojagy.todaysave.common.extension.isTrue
-import com.dojagy.todaysave.common.util.DLog
+import com.dojagy.todaysave.core.resources.R
 import com.dojagy.todaysave.core.resources.theme.Gray4
 import com.dojagy.todaysave.core.resources.theme.Gray7
 import com.dojagy.todaysave.data.view.clickableNoRipple
 import com.dojagy.todaysave.data.view.text.TsText
+import com.dojagy.todaysave.ui.auth.login.LoginActivity
 import com.dojagy.todaysave.util.AppBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.regex.Matcher
 
 @AndroidEntryPoint
@@ -40,10 +44,26 @@ class ContentSaveActivity : AppBaseActivity<ContentSaveState, ContentSaveEffect,
 
     override val viewModel: ContentSaveViewModel by viewModels()
 
+    private val isMain by lazy {
+        intent.getBooleanExtra("isMain", true)
+    }
 
-    //TODO: Splash 없이 진입 가능한 Activity 임
-    //TODO: 로그인 체크 필요 -> 로그인 안한 경우 그냥 일단 Login 하라고 던지면 될 듯
-    //TODO: 조금 친절하게 한다면, 링크 저장 하면서 로그인 체크 하고 다 물고 있다가 로그인 or 회원가입 후 처리 할수도 있긴 함
+    //조금 친절하게 한다면, 링크 저장 하면서 로그인 체크 하고 다 물고 있다가 로그인 or 회원가입 후 처리 할수도 있긴 함
+    override fun viewInit() {
+        super.viewInit()
+        lifecycleScope.launch {
+            if(viewModel.isLogin().isFalse()) {
+                startActivity(
+                    Intent(this@ContentSaveActivity, LoginActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        putExtra("message", getString(R.string.need_login_service))
+                        putExtra("sharedLink", sharedLink())
+                    }
+                )
+                finish()
+            }
+        }
+    }
 
     @Composable
     override fun Content() {
@@ -233,20 +253,30 @@ class ContentSaveActivity : AppBaseActivity<ContentSaveState, ContentSaveEffect,
 
     override fun onResume() {
         super.onResume()
+        if(isMain.isFalse()) {
+            sharedLink()?.let { link ->
+                viewModel.handleEvent(
+                    event = ContentSaveEvent.LinkShared(
+                        type = LinkSharedType.APP_SHARE,
+                        link = link
+                    )
+                )
+            } ?: run {
+                viewModel.showSnackBar("정상적인 링크가 아닙니다.")
+            }
+        }
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if(hasFocus) {
-            var userShareLink = sharedLink()
-            if(userShareLink == null) {
-                userShareLink = clipboardLink()
-            }
-
-            DLog.e("SHARED_URL_RESULT", userShareLink)
-
-            userShareLink?.let {
-                viewModel.requestMetadata(it)
+        if(hasFocus && isMain.isTrue()) {
+            clipboardLink()?.let { link ->
+                viewModel.handleEvent(
+                    event = ContentSaveEvent.LinkShared(
+                        type = LinkSharedType.CLIPBOARD,
+                        link = link
+                    )
+                )
             }
         }
     }
@@ -254,7 +284,6 @@ class ContentSaveActivity : AppBaseActivity<ContentSaveState, ContentSaveEffect,
     private fun sharedLink(): String? {
         return if(intent?.action == Intent.ACTION_SEND && intent?.type == "text/plain") {
             val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
-            DLog.e("sharedText", sharedText)
             urlCheck(sharedText)
         }else {
             null
@@ -264,12 +293,8 @@ class ContentSaveActivity : AppBaseActivity<ContentSaveState, ContentSaveEffect,
     private fun clipboardLink(): String? {
         val clipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
 
-        DLog.e("clipboardManager.hasPrimaryClip()", clipboardManager.hasPrimaryClip())
-        DLog.e("clipboardManager.primaryClipDescription?.hasMimeType(\"text/plain\").isTrue()", clipboardManager.primaryClipDescription?.hasMimeType("text/plain").isTrue())
-
         if(clipboardManager.hasPrimaryClip() && clipboardManager.primaryClipDescription?.hasMimeType("text/plain").isTrue()) {
             val item = clipboardManager.primaryClip?.getItemAt(0)
-            DLog.e("복사한거", item?.text?.toString())
             return urlCheck(item?.text?.toString())
         }
 

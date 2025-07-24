@@ -31,4 +31,7 @@
 
     <string name="terms_check_error_message">%s에 동의해주세요.</string>
 
+    <string name="invalid_user_message">사용자 정보가 유효하지 않습니다.\n다시 로그인 해주세요.</string>
+    <string name="need_login_service">로그인이 필요한 서비스입니다.</string>
+
 </resources>
